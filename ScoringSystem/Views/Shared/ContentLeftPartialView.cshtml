@@ -1,0 +1,25 @@
+<div class="leftPanel">
+        @* DXCOMMENT: Configure the left panel's menu *@
+    @Html.DevExpress().NavBar(settings => {
+        settings.Name = "LeftNavBar";
+        settings.AutoCollapse = true;
+        settings.EnableAnimation = true;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.ControlStyle.Border.BorderWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+        settings.ControlStyle.Paddings.Padding = System.Web.UI.WebControls.Unit.Pixel(0);
+        settings.Groups.Add(group => {
+            group.Text = "Group 1";
+            group.Items.Add("Item 1");
+            group.Items.Add("Item 2");
+            group.Items.Add("Item 3");
+        });
+        settings.Groups.Add(group => {
+            group.Text = "Group 2";
+            group.Items.Add("Item 1");
+            group.Items.Add("Item 2");
+            group.Items.Add("Item 3");
+            group.Items.Add("Item 4");
+            group.Items.Add("Item 5");
+        });
+    }).GetHtml()
+</div>
