@@ -11,7 +11,7 @@ namespace ScoringSystem.Controllers
         public ActionResult Index()
         {
             // DXCOMMENT: Pass a data model for GridView
-            
+            ViewBag.PageName = "Main";
             return View();
         }
         

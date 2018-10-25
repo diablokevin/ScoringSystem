@@ -2,13 +2,13 @@
 
 @if(Model == HeaderViewRenderMode.Title) {
     <div class="templateTitle">
-        @Html.ActionLink("Project Title", "Index", "Home")
+        @Html.ActionLink("2018机务技能竞赛", "Index", "Home")
     </div>
 } else { 
     if(Model == HeaderViewRenderMode.Full) { 
         <div class="headerTop">
             <div class="templateTitle">
-                @Html.ActionLink("Project Title", "Index", "Home")
+                @Html.ActionLink("2018机务技能竞赛", "Index", "Home")
             </div>
             <div class="loginControl">
                 @Html.Partial("LogOnPartialView")
@@ -19,14 +19,25 @@
     <div class="headerMenu">
             @* DXCOMMENT: Configure the header menu *@
     @Html.DevExpress().Menu(settings => {
-        settings.Name = "HeaderMenu";
-        settings.ItemAutoWidth = false;
-        settings.ControlStyle.CssClass = "headerMenu";
-        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-        settings.Items.Add("Item 1");
-        settings.Items.Add("Item 2");
-        settings.Items.Add("Item 3");
-        settings.Items.Add("Item 4");
-    }).GetHtml()
+    settings.Name = "HeaderMenu";
+    settings.ItemAutoWidth = false;
+    settings.ControlStyle.CssClass = "headerMenu";
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+    settings.Items.Add("主页","");
+    settings.Items.Add("报表","report");
+    settings.Items.Add("设置","setting");
+    
+    settings.ClientSideEvents.ItemClick = "function(s,e){ GotoPage(s,e);}";
+
+}).GetHtml()
     </div>
 }
+
+<script>
+    var pagename;
+    function GotoPage(sender, e) {
+        var name = e["item"].name;
+        pagename = name;
+        location.href = '/'+name; 
+    }
+</script>

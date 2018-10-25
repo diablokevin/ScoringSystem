@@ -1,25 +1,65 @@
 <div class="leftPanel">
-        @* DXCOMMENT: Configure the left panel's menu *@
+    @* DXCOMMENT: Configure the left panel's menu *@
     @Html.DevExpress().NavBar(settings => {
-        settings.Name = "LeftNavBar";
-        settings.AutoCollapse = true;
-        settings.EnableAnimation = true;
-        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-        settings.ControlStyle.Border.BorderWidth = System.Web.UI.WebControls.Unit.Pixel(0);
-        settings.ControlStyle.Paddings.Padding = System.Web.UI.WebControls.Unit.Pixel(0);
-        settings.Groups.Add(group => {
-            group.Text = "Group 1";
-            group.Items.Add("Item 1");
-            group.Items.Add("Item 2");
-            group.Items.Add("Item 3");
-        });
-        settings.Groups.Add(group => {
-            group.Text = "Group 2";
-            group.Items.Add("Item 1");
-            group.Items.Add("Item 2");
-            group.Items.Add("Item 3");
-            group.Items.Add("Item 4");
-            group.Items.Add("Item 5");
-        });
-    }).GetHtml()
+    settings.Name = "LeftNavBar";
+
+    settings.AutoCollapse = true;
+    settings.EnableAnimation = true;
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+    settings.ControlStyle.Border.BorderWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+    settings.ControlStyle.Paddings.Padding = System.Web.UI.WebControls.Unit.Pixel(0);
+    string pagename = ViewBag.PageName;
+    switch (pagename)
+    {
+        case "Main":
+
+            settings.Groups.Add(group =>
+            {
+                group.Text = "我是裁判";
+                group.Items.Add("评分");
+                group.Items.Add("Item 2");
+                group.Items.Add("Item 3");
+                group.Items.Add("Item 4");
+                group.Items.Add("Item 5");
+            });
+            settings.Groups.Add(group =>
+            {
+                group.Text = "我是选手";
+                group.Items.Add("查看个人赛程");
+                group.Items.Add("查看个人成绩");
+
+            });
+            break;
+        case "Report":
+
+            break;
+        case "Setting":
+            settings.Groups.Add(group =>
+            {
+                group.Text = "用户设置";
+                group.Items.Add("角色");
+                group.Items.Add("用户");
+
+            });
+            settings.Groups.Add(group =>
+            {
+                group.Text = "赛事设置";
+                group.Items.Add("考核项目");
+                group.Items.Add("项目赛程");
+
+            });
+            settings.Groups.Add(group =>
+            {
+                group.Text = "人员设置";
+                group.Items.Add("公司");
+                group.Items.Add("选手");
+                group.Items.Add("裁判");
+            });
+            break;
+        default:
+            break;
+    }
+
+}).GetHtml()
 </div>
+

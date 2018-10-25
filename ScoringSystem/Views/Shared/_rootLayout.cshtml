@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
     <title>@ViewBag.Title</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
 
-    
     @Html.DevExpress().GetStyleSheets(
         new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
         new StyleSheet { ExtensionSuite = ExtensionSuite.CardView },
@@ -15,7 +15,7 @@
         new StyleSheet { ExtensionSuite = ExtensionSuite.Report },
         new StyleSheet { ExtensionSuite = ExtensionSuite.GridView }
     )
-    @Html.DevExpress().GetScripts( 
+    @Html.DevExpress().GetScripts(
         new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
         new Script { ExtensionSuite = ExtensionSuite.CardView },
         new Script { ExtensionSuite = ExtensionSuite.Editors },
@@ -23,7 +23,10 @@
         new Script { ExtensionSuite = ExtensionSuite.Report },
         new Script { ExtensionSuite = ExtensionSuite.GridView }
     )
-    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+
+
+    <link href="~/Content/Site.css" rel="stylesheet" />
+
 </head>
 <body>
     @Html.DevExpress().Panel(settings => {

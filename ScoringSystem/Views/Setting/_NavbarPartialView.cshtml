@@ -1,0 +1,23 @@
+﻿
+@Html.DevExpress().NavBar(settings => {
+    settings.Name = "SettingNavBar";
+    settings.AutoCollapse = true;
+    settings.EnableAnimation = true;
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+    settings.ControlStyle.Border.BorderWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+    settings.ControlStyle.Paddings.Padding = System.Web.UI.WebControls.Unit.Pixel(0);
+
+    settings.Groups.Add(group => {
+        group.Text = "赛事设置";
+        group.Items.Add("考核项目");
+        group.Items.Add("项目赛程");
+        group.Items.Add("Item 2");
+    });
+    settings.Groups.Add(group => {
+        group.Text = "人员设置";
+        group.Items.Add("公司");
+        group.Items.Add("选手");
+        group.Items.Add("裁判");
+    });
+}).GetHtml()
+
