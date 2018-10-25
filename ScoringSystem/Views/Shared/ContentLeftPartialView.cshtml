@@ -4,10 +4,13 @@
     settings.Name = "LeftNavBar";
 
     settings.AutoCollapse = true;
-    settings.EnableAnimation = true;
+    settings.EnableAnimation = false;
     settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
     settings.ControlStyle.Border.BorderWidth = System.Web.UI.WebControls.Unit.Pixel(0);
     settings.ControlStyle.Paddings.Padding = System.Web.UI.WebControls.Unit.Pixel(0);
+    settings.ClientSideEvents.ItemClick = "function(s,e){ GotoPage(s,e);}";
+    settings.AllowSelectItem = true;
+    
     string pagename = ViewBag.PageName;
     switch (pagename)
     {
@@ -37,23 +40,26 @@
             settings.Groups.Add(group =>
             {
                 group.Text = "用户设置";
-                group.Items.Add("角色");
-                group.Items.Add("用户");
+                group.Name = "userSetting";
+                group.Items.Add("角色","role");
+                group.Items.Add("用户","user");
 
             });
             settings.Groups.Add(group =>
             {
                 group.Text = "赛事设置";
-                group.Items.Add("考核项目");
-                group.Items.Add("项目赛程");
+                group.Name = "eventSetting";
+                group.Items.Add("考核项目","event");
+                group.Items.Add("项目赛程","schedule");
 
             });
             settings.Groups.Add(group =>
             {
                 group.Text = "人员设置";
-                group.Items.Add("公司");
-                group.Items.Add("选手");
-                group.Items.Add("裁判");
+                group.Name = "peopleSetting";
+                group.Items.Add("公司","company");
+                group.Items.Add("选手","competitor");
+                group.Items.Add("裁判","judge");
             });
             break;
         default:

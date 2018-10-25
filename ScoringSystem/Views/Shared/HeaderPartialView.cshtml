@@ -26,18 +26,10 @@
     settings.Items.Add("主页","");
     settings.Items.Add("报表","report");
     settings.Items.Add("设置","setting");
-    
+    settings.AllowSelectItem = true;
     settings.ClientSideEvents.ItemClick = "function(s,e){ GotoPage(s,e);}";
 
 }).GetHtml()
     </div>
 }
 
-<script>
-    var pagename;
-    function GotoPage(sender, e) {
-        var name = e["item"].name;
-        pagename = name;
-        location.href = '/'+name; 
-    }
-</script>

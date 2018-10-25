@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "~/Views/Shared/_mainLayout.cshtml";
+}
+
+
+@Html.Action("CompanyGridViewPartial")
+
+
+
+@Html.ActionLink("批量录入", "Multi")
+
+
+<script>
+    SetLeftNarBarItemSelect("peopleSetting", "company");
+</script>

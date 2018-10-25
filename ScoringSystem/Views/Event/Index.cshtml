@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "~/Views/Shared/_mainLayout.cshtml";
+}
+
+
+
+@Html.Action("EventGridViewPartial")
+
+@Html.ActionLink("批量录入", "Multi")
+
+
+<script>
+    SetLeftNarBarItemSelect("eventSetting", "event");
+</script>

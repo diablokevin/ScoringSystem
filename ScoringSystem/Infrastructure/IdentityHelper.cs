@@ -14,5 +14,10 @@ namespace ScoringSystem.Infrastructure
             ApplicationUserManager userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
             return new MvcHtmlString(userManager.FindByIdAsync(id).Result.UserName);
         }
+        public static MvcHtmlString GetRealName(this HtmlHelper html, string id)
+        {
+            ApplicationUserManager userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            return new MvcHtmlString(userManager.FindByIdAsync(id).Result.RealName);
+        }
     }
 }

@@ -1,0 +1,77 @@
+﻿@{
+    Layout = "~/Views/Shared/_lightLayout.cshtml";
+}
+
+
+@Html.ActionLink("返回","Index")
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+
+    @Html.DevExpress().Memo(control =>
+     {
+         control.Name = "List";
+         control.Properties.Caption = "批量录入";
+         control.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+         control.Width = Unit.Pixel(300);
+
+         control.Height = 300;
+         control.ControlStyle.VerticalAlign = VerticalAlign.Top;
+
+         control.Properties.NullText = "名称 专业";
+
+
+     }).GetHtml()
+    
+    @Html.DevExpress().Button(control =>
+{
+    control.Name = "submitbtn";
+    control.Text = "提交";
+    control.UseSubmitBehavior = true;
+}).GetHtml()
+
+    @*<div class="form-group">
+        <textarea name="List" rows="30" cols="30">名称 专业</textarea>
+    </div>*@
+    @*<div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>*@
+
+    <div class="form-group">
+
+        <table class="table">
+            <tr>
+                <th>名称</th>
+                <th>专业</th>
+            </tr>
+            @if (ViewBag.Content != null)
+            {
+                foreach (string item in ViewBag.Content)
+                {
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                        <tr>
+
+                            <td>
+                                @item.Split('\t')[0]
+                            </td>
+                            <td>
+                                @item.Split('\t')[1]
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+        </table>
+    </div>
+
+}
+
+<div>
+    @Html.ActionLink("返回", "Index")
+</div>
+

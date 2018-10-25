@@ -40,7 +40,7 @@ namespace ScoringSystem.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("ScoreDb", throwIfV1Schema: false)
+            : base("ScoreDbContext", throwIfV1Schema: false)
         {
         }
 

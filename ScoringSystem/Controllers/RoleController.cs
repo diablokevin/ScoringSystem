@@ -18,6 +18,7 @@ namespace ScoringSystem.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.PageName = "Setting";
             return View(RoleManager.Roles);
         }
         public ActionResult Create()
