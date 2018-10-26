@@ -1,3 +1,4 @@
+using DevExpress.Web.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -503,5 +504,135 @@ namespace ScoringSystem.Controllers {
             }
         }
         #endregion
+
+        public ActionResult Index()
+        {
+            ViewBag.PageName = "Setting";
+            return View();
+
+        }
+
+        [ValidateInput(false)]
+        public ActionResult AccountGridViewPartial()
+        {
+            var model = UserManager.Users;
+            return PartialView("_AccountGridViewPartial", model.ToList());
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public async Task<ActionResult> AccountGridViewPartialAddNewAsync(ScoringSystem.Models.ApplicationUser item)
+        {
+            var model = UserManager.Users;
+            ViewBag.Role = new SelectList(RoleManager.Roles.ToList(), "Name", "Name");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var user = new ApplicationUser { UserName = item.UserName, StaffId = item.StaffId, RealName = item.RealName };
+                    var result = await UserManager.CreateAsync(user,"123456");
+                    if (result.Succeeded)
+                    {
+                        // UserManager.AddToRole(user.Id, item.Roles.Role);
+                        return PartialView("_AccountGridViewPartial", model.ToList());
+                    }
+                    else
+                    {
+                        ViewData["EditError"] = Infrastructure.MyHandler.IdentityResultErrorsToString(result);
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_AccountGridViewPartial", model.ToList());
+        }
+        [HttpPost, ValidateInput(false)]
+        public async Task<ActionResult> AccountGridViewPartialUpdateAsync(ScoringSystem.Models.ApplicationUser item)
+        {
+            var model = UserManager.Users;
+            ApplicationUser user = await UserManager.FindByIdAsync(item.Id);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (user != null)
+                    {
+                        ////验证密码是否满足要求
+                        //IdentityResult validPass = await UserManager.PasswordValidator.ValidateAsync(password);
+                        //if (validPass.Succeeded)
+                        //{
+                        //    user.PasswordHash = UserManager.PasswordHasher.HashPassword(password);
+                        //}
+                        //else
+                        //{
+                        //    ViewData["EditError"] = validPass.Errors;
+                        //}
+
+                        user.StaffId = item.StaffId;
+                        user.RealName = item.RealName;
+                        user.UserName = item.UserName;
+                        IdentityResult result = await UserManager.UpdateAsync(user);
+                        if (result.Succeeded)
+                        {
+                            return PartialView("_AccountGridViewPartial", model.ToList());
+                        }
+                        else
+                        {
+                            ViewData["EditError"] = Infrastructure.MyHandler.IdentityResultErrorsToString(result);
+                        }
+                        //if (validPass == null || validPass.Succeeded)
+                        //{
+                        //    IdentityResult result = await UserManager.UpdateAsync(user);
+                        //    if (result.Succeeded)
+                        //    {
+                        //        return RedirectToAction("Index");
+                        //    }
+                        //    AddErrors(result);
+                        //}
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_AccountGridViewPartial", model.ToList());
+        }
+        [HttpPost, ValidateInput(false)]
+        public async Task<ActionResult> AccountGridViewPartialDeleteAsync(System.String Id)
+        {
+            var model = UserManager.Users;
+            ApplicationUser user = await UserManager.FindByIdAsync(Id);
+            if (user != null)
+            {
+                if (user.UserName == "admin")
+                {
+                    ViewData["EditError"] = "请勿删除管理员！";
+                }
+                try
+                {
+                    IdentityResult result = await UserManager.DeleteAsync(user);
+                    if (result.Succeeded)
+                    {
+                        return PartialView("_AccountGridViewPartial", model.ToList());
+                    }
+                    else
+                    {
+                        ViewData["EditError"] = Infrastructure.MyHandler.IdentityResultErrorsToString(result);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            return PartialView("_AccountGridViewPartial", model.ToList());
+        }
     }
 }

@@ -134,7 +134,17 @@ namespace ScoringSystem.Controllers
             if(Id!=null)
             {
                 ApplicationRole role = await RoleManager.FindByIdAsync(Id);
-                return PartialView("_RoldEditFormPartial", role ?? new ApplicationRole());
+                string[] memberIDs = role.Users.Select(x => x.UserId).ToArray();
+                IEnumerable<ApplicationUser> members = UserManager.Users.Where(x => memberIDs.Any(y => y == x.Id));
+                IEnumerable<ApplicationUser> nonMembers = UserManager.Users.Except(members);
+                RoleEditModel model = new RoleEditModel()
+                {
+                    Role = role,
+                    Members = members,
+                    NonMembers = nonMembers
+                };
+
+                return PartialView("_RoldEditFormPartial", model ?? new RoleEditModel());
             }
             return PartialView("_RoldEditFormPartial", new ApplicationRole());
 

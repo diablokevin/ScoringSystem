@@ -321,6 +321,8 @@
     <Content Include="Views\Competitor\Multi.cshtml" />
     <Content Include="Views\Role\_RoleGridViewPartial.cshtml" />
     <Content Include="Views\Role\_RoldEditFormPartial.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\_AccountGridViewPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

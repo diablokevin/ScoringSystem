@@ -1,11 +1,17 @@
-﻿@model  ScoringSystem.Models.ApplicationRole
+﻿@model  ScoringSystem.Models.RoleEditModel
 
 @Html.DevExpress().FormLayout(fl =>
 {
     fl.Name = "RoleEditForm";
     fl.Width = Unit.Percentage(100);
     fl.ColCount = 2;
-    fl.Items.Add(m => m.Name,s=>s.Caption="名称");
+    fl.Items.Add(m => m.Role.Name,s=>s.Caption="名称");
+    fl.Items.Add(m => m.Members, s =>
+    {
+        s.NestedExtension().CheckBoxList(c => {
+            c.Properties.DataSource = Model.Members;
+        });
+    });
     //fl.Items.Add(i =>
     //{
     //    i.FieldName = "Name";
