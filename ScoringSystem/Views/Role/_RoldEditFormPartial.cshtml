@@ -1,0 +1,55 @@
+﻿@model  ScoringSystem.Models.ApplicationRole
+
+@Html.DevExpress().FormLayout(fl =>
+{
+    fl.Name = "RoleEditForm";
+    fl.Width = Unit.Percentage(100);
+    fl.ColCount = 2;
+    fl.Items.Add(m => m.Name,s=>s.Caption="名称");
+    //fl.Items.Add(i =>
+    //{
+    //    i.FieldName = "Name";
+
+    //    i.NestedExtension().TextBox(s =>
+    //    {
+    //        s.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+    //        s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+    //        s.Properties.ValidationSettings.Display = Display.Dynamic;
+    //        s.ShowModelErrors = true;
+    //        s.Width = Unit.Percentage(100);
+    //    });
+
+    //});
+    //formSettings.Items.Add(i =>
+    //{
+    //    i.FieldName = "Users";
+    //    i.NestedExtension().CheckBoxList(s =>
+    //    {
+    //        s.Properties.TextField = "UserId";
+    //        s.Properties.ValueField = "UserId";
+    //        s.Properties.DataSource = Model.Users;
+    //    });
+    //});
+    fl.Items.Add(c =>
+    {
+        c.ShowCaption =DefaultBoolean.False;
+        c.NestedExtension().Button(btn =>
+        {
+            btn.Name = "update";
+            btn.Text = "更新";
+            btn.ClientSideEvents.Click = "function (s,e) {RoleGridView.UpdateEdit();}";
+        });
+    });
+    fl.Items.Add(c =>
+    {
+        c.ShowCaption = DefaultBoolean.False;
+        c.NestedExtension().Button(btn =>
+        {
+            btn.Name = "cancel";
+            btn.Text = "取消";
+            btn.ClientSideEvents.Click = "function (s,e) {RoleGridView.CancelEdit();}";
+        });
+    });
+
+
+}).GetHtml();

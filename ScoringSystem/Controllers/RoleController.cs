@@ -21,6 +21,127 @@ namespace ScoringSystem.Controllers
             ViewBag.PageName = "Setting";
             return View(RoleManager.Roles);
         }
+
+        [ValidateInput(false)]
+        public ActionResult RoleGridViewPartial()
+        {
+            var model = RoleManager.Roles;
+            
+            return PartialView("_RoleGridViewPartial", model.ToList());
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public async Task<ActionResult> RoleGridViewPartialAddNewAsync(ScoringSystem.Models.ApplicationRole item)
+        {
+            var model = RoleManager.Roles;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    IdentityResult result = await RoleManager.CreateAsync(new ApplicationRole(item.Name));
+                    if (result.Succeeded)
+                    {
+                        return PartialView("_RoleGridViewPartial", model.ToList());
+                    }
+                    else
+                    {
+                        ViewData["EditError"] = result.Errors;
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_RoleGridViewPartial", model.ToList());
+        }
+            
+
+        public async Task<ActionResult> RoleGridViewPartialUpdateAsync(ApplicationRole item)
+        {
+            var model = RoleManager.Roles;
+            ApplicationRole role = await RoleManager.FindByIdAsync(item.Id);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                   
+                    role.Name = item.Name;
+                    IdentityResult result = await RoleManager.UpdateAsync(role);
+                    if (result.Succeeded)
+                    {
+                        return PartialView("_RoleGridViewPartial", model.ToList());
+                    }
+                    else
+                    {
+                        ViewData["EditError"] = result.Errors;
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+            {
+                ViewData["EditError"] = "Please, correct all errors.";
+            }
+               
+             return PartialView("_RoleGridViewPartial", model.ToList());
+        
+            
+            //string[] memberIDs = role.Users.Select(x => x.UserId).ToArray();
+            //IEnumerable<ApplicationUser> members = UserManager.Users.Where(x => memberIDs.Any(y => y == x.Id));
+            //IEnumerable<ApplicationUser> nonMembers = UserManager.Users.Except(members);
+            //return View(new RoleEditModel()
+            //{
+            //    Role = role,
+            //    Members = members,
+            //    NonMembers = nonMembers
+            //});
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public async Task<ActionResult> RoleGridViewPartialDeleteAsync(string Id)
+        {
+            var model = RoleManager.Roles;
+            ApplicationRole role = await RoleManager.FindByIdAsync(Id);
+
+            if (role != null)
+            {
+                IdentityResult result = await RoleManager.DeleteAsync(role);
+                if (result.Succeeded)
+                {
+                    return PartialView("_RoleGridViewPartial", model.ToList());
+                }
+                else
+                {
+                    ViewData["EditError"] = result.Errors;
+                }
+            }
+            else
+            {
+                ViewData["EditError"] = "无法找到该Role" ;
+            }
+            return PartialView("_RoleGridViewPartial", model.ToList());
+        }
+
+
+        public async Task<ActionResult> RoleEditFormPartialAsync(String Id)
+        {
+            if(Id!=null)
+            {
+                ApplicationRole role = await RoleManager.FindByIdAsync(Id);
+                return PartialView("_RoldEditFormPartial", role ?? new ApplicationRole());
+            }
+            return PartialView("_RoldEditFormPartial", new ApplicationRole());
+
+        }
+
+
+
         public ActionResult Create()
         {
             return View();

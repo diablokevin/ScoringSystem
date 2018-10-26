@@ -1,0 +1,47 @@
+﻿﻿@functions{
+    object GetEditingRole(ASPxGridView grid)
+    {
+        if (grid.IsNewRowEditing)
+            return new ScoringSystem.Models.RoleEditModel ();
+        return grid.GetRow(grid.EditingRowVisibleIndex);
+    }
+}
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "RoleGridView";
+        settings.CallbackRouteValues = new { Controller = "Role", Action = "RoleGridViewPartial" };
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Role", Action = "RoleGridViewPartialAddNewAsync" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Role", Action = "RoleGridViewPartialUpdateAsync" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Role", Action = "RoleGridViewPartialDeleteAsync" };
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.Width = Unit.Percentage(100);
+        settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "Id";
+        settings.Columns.Add("Name", "名称");
+        settings.Columns.Add(col =>
+        {
+            col.Name = "UserCount";
+            col.FieldName = "Users.Count";
+            col.Caption = "用户数量";
+        });
+
+        settings.SetEditFormTemplateContent(form =>
+        {
+            Html.RenderAction("RoleEditFormPartialAsync", new { Id = form.KeyValue });
+        });
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()
