@@ -6,12 +6,7 @@
     fl.Width = Unit.Percentage(100);
     fl.ColCount = 2;
     fl.Items.Add(m => m.Role.Name,s=>s.Caption="名称");
-    fl.Items.Add(m => m.Members, s =>
-    {
-        s.NestedExtension().CheckBoxList(c => {
-            c.Properties.DataSource = Model.Members;
-        });
-    });
+
     //fl.Items.Add(i =>
     //{
     //    i.FieldName = "Name";
@@ -20,7 +15,7 @@
     //    {
     //        s.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
     //        s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
-    //        s.Properties.ValidationSettings.Display = Display.Dynamic;
+    //        s.Properties.ValidatiwonSettings.Display = Display.Dynamic;
     //        s.ShowModelErrors = true;
     //        s.Width = Unit.Percentage(100);
     //    });
@@ -58,4 +53,4 @@
     });
 
 
-}).GetHtml();
+}).GetHtml()

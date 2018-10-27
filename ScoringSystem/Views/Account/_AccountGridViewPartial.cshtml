@@ -1,19 +1,24 @@
 @{
-    var grid = Html.DevExpress().GridView(settings => {
+    var grid = Html.DevExpress().GridView(settings =>
+    {
         settings.Name = "AccountGridView";
-        settings.CallbackRouteValues = new { Controller = "Account", Action = "AccountGridViewPartial" };
+        settings.CallbackRouteValues = new
+        {
+            Controller = "Account",
+            Action = "AccountGridViewPartial" };
 
         settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Account", Action = "AccountGridViewPartialAddNewAsync" };
         settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Account", Action = "AccountGridViewPartialUpdateAsync" };
         settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Account", Action = "AccountGridViewPartialDeleteAsync" };
         settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
         settings.SettingsBehavior.ConfirmDelete = true;
+        settings.Width = Unit.Percentage(100);
 
         settings.CommandColumn.Visible = true;
         settings.CommandColumn.ShowNewButton = true;
         settings.CommandColumn.ShowDeleteButton = true;
         settings.CommandColumn.ShowEditButton = true;
-        
+
         settings.KeyFieldName = "Id";
 
         settings.SettingsPager.Visible = true;
@@ -26,13 +31,19 @@
         settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
-        
+
         settings.Columns.Add("Id");
-        settings.Columns.Add("UserName");
-        settings.Columns.Add("StaffId");
-        settings.Columns.Add("RealName");
-        //settings.Columns.Add("Email");
-        //settings.Columns.Add("Roles");
+        settings.Columns.Add("UserName","登录名");
+        settings.Columns.Add("StaffId","员工号");
+        settings.Columns.Add("RealName","姓名");
+        settings.Columns.Add("Roles", "角色");
+
+        settings.SetEditFormTemplateContent(fl =>
+        {
+            Html.RenderAction("AccountEditFormPartial", new { Id = fl.KeyValue });
+        });
+
+
 
 
     });

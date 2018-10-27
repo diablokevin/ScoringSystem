@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ScoringSystem.Controllers {
     public class AccountController : Controller {
@@ -508,31 +508,69 @@ namespace ScoringSystem.Controllers {
         public ActionResult Index()
         {
             ViewBag.PageName = "Setting";
+           // ViewBag.Roles= RoleManager.Roles;
             return View();
 
         }
 
+        
+
         [ValidateInput(false)]
         public ActionResult AccountGridViewPartial()
         {
-            var model = UserManager.Users;
-            return PartialView("_AccountGridViewPartial", model.ToList());
+            
+            //转换users的模型
+            List<AccountEditModel> accountEditModels = new List<AccountEditModel>();
+            foreach(var item in UserManager.Users)
+            {
+                //var accountEditModel = new AccountEditModel
+                //{
+                //    Id = item.Id,
+                //    UserName = item.UserName,
+                //    RealName = item.RealName,
+                //    StaffId = item.StaffId
+                //};
+                //List<string> list = new List<string>();
+                //foreach(var role in item.Roles)  //把rolesID转换到tokenbox中
+                //{
+                //    accountEditModel.RoleIds.Add(role.RoleId);
+                //    list.Add(RoleManager.FindById(role.RoleId).Name);
+                //}
+
+                ////把roleId转换为roleName字符串
+                //accountEditModel.Roles = string.Join(";", list.ToArray());
+                accountEditModels.Add(new AccountEditModel(item, RoleManager.Roles));
+            }
+            ViewBag.Roles = RoleManager.Roles.ToList();
+            
+         
+            return PartialView("_AccountGridViewPartial", accountEditModels.ToList());
         }
 
         [HttpPost, ValidateInput(false)]
-        public async Task<ActionResult> AccountGridViewPartialAddNewAsync(ScoringSystem.Models.ApplicationUser item)
+        public async Task<ActionResult> AccountGridViewPartialAddNewAsync(ScoringSystem.Models.AccountEditModel item)
         {
-            var model = UserManager.Users;
-            ViewBag.Role = new SelectList(RoleManager.Roles.ToList(), "Name", "Name");
+
+            //转换users的模型
+            List<AccountEditModel> model = new List<AccountEditModel>();
+            foreach (var applicationUser in UserManager.Users)
+            {
+                model.Add(new AccountEditModel(applicationUser, RoleManager.Roles));
+            }
+
             if (ModelState.IsValid)
             {
                 try
                 {
                     var user = new ApplicationUser { UserName = item.UserName, StaffId = item.StaffId, RealName = item.RealName };
-                    var result = await UserManager.CreateAsync(user,"123456");
+                    var result = await UserManager.CreateAsync(user,string.IsNullOrEmpty(item.PassWord)?item.PassWord:"123456"); 
                     if (result.Succeeded)
                     {
-                        // UserManager.AddToRole(user.Id, item.Roles.Role);
+                        foreach(var roleId in item.RoleIds)
+                        {
+                            UserManager.AddToRole(user.Id, RoleManager.FindById(roleId).Name);
+                        }
+                        
                         return PartialView("_AccountGridViewPartial", model.ToList());
                     }
                     else
@@ -551,9 +589,13 @@ namespace ScoringSystem.Controllers {
             return PartialView("_AccountGridViewPartial", model.ToList());
         }
         [HttpPost, ValidateInput(false)]
-        public async Task<ActionResult> AccountGridViewPartialUpdateAsync(ScoringSystem.Models.ApplicationUser item)
+        public async Task<ActionResult> AccountGridViewPartialUpdateAsync(ScoringSystem.Models.AccountEditModel item)
         {
-            var model = UserManager.Users;
+            List<AccountEditModel> model = new List<AccountEditModel>();
+            foreach (var applicationUser in UserManager.Users)
+            {
+                model.Add(new AccountEditModel(applicationUser, RoleManager.Roles));
+            }
             ApplicationUser user = await UserManager.FindByIdAsync(item.Id);
             if (ModelState.IsValid)
             {
@@ -561,16 +603,20 @@ namespace ScoringSystem.Controllers {
                 {
                     if (user != null)
                     {
-                        ////验证密码是否满足要求
-                        //IdentityResult validPass = await UserManager.PasswordValidator.ValidateAsync(password);
-                        //if (validPass.Succeeded)
-                        //{
-                        //    user.PasswordHash = UserManager.PasswordHasher.HashPassword(password);
-                        //}
-                        //else
-                        //{
-                        //    ViewData["EditError"] = validPass.Errors;
-                        //}
+                        if(!string.IsNullOrEmpty( item.PassWord))
+                        {
+                            //验证密码是否满足要求
+                            IdentityResult validPass = await UserManager.PasswordValidator.ValidateAsync(item.PassWord);
+                            if (validPass.Succeeded)
+                            {
+                                user.PasswordHash = UserManager.PasswordHasher.HashPassword(item.PassWord);
+                            }
+                            else
+                            {
+                                ViewData["EditError"] = validPass.Errors;
+                            }
+                        }
+
 
                         user.StaffId = item.StaffId;
                         user.RealName = item.RealName;
@@ -578,6 +624,31 @@ namespace ScoringSystem.Controllers {
                         IdentityResult result = await UserManager.UpdateAsync(user);
                         if (result.Succeeded)
                         {
+                            IEnumerable<string> orginroles = user.Roles.Select(r=>r.RoleId);
+                            IEnumerable<string> unchangedroles = item.RoleIds.Where(x => orginroles.Any(y => y == x));
+                            IEnumerable<string> newrole = item.RoleIds.Except(unchangedroles);
+                            IEnumerable<string> deleterole = orginroles.Except(unchangedroles);
+
+                            foreach (string roleId in newrole)
+                            {
+                                result = await UserManager.AddToRoleAsync(user.Id, RoleManager.FindById(roleId).Name);
+                                if (!result.Succeeded)
+                                {
+                                    ViewData["EditError"] = Infrastructure.MyHandler.IdentityResultErrorsToString(result);
+                                }
+
+                            }
+
+                            foreach (string roleId in deleterole)
+                            {
+                                result = await UserManager.RemoveFromRoleAsync(user.Id, RoleManager.FindById(roleId).Name);
+                                if (!result.Succeeded)
+                                {
+                                    ViewData["EditError"] = Infrastructure.MyHandler.IdentityResultErrorsToString(result);
+                                }
+
+                            }
+
                             return PartialView("_AccountGridViewPartial", model.ToList());
                         }
                         else
@@ -607,7 +678,11 @@ namespace ScoringSystem.Controllers {
         [HttpPost, ValidateInput(false)]
         public async Task<ActionResult> AccountGridViewPartialDeleteAsync(System.String Id)
         {
-            var model = UserManager.Users;
+            List<AccountEditModel> model = new List<AccountEditModel>();
+            foreach (var applicationUser in UserManager.Users)
+            {
+                model.Add(new AccountEditModel(applicationUser, RoleManager.Roles));
+            }
             ApplicationUser user = await UserManager.FindByIdAsync(Id);
             if (user != null)
             {
@@ -633,6 +708,27 @@ namespace ScoringSystem.Controllers {
                 }
             }
             return PartialView("_AccountGridViewPartial", model.ToList());
+        }
+
+        public ActionResult AccountEditFormPartial(String Id)
+        {
+            ViewBag.Roles = RoleManager.Roles.ToList();
+            if (Id != null)
+            {
+                ApplicationUser user = UserManager.FindById(Id);
+                DevExpress.Web.TokenCollection tokencol = new DevExpress.Web.TokenCollection();
+
+                foreach(Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole role in  user.Roles)
+                {
+                    tokencol.Add(role.RoleId);
+                }
+
+                AccountEditModel model = new AccountEditModel(user, RoleManager.Roles);
+
+                return PartialView("_AccountEditFormPartial", model ?? new AccountEditModel());
+            }
+            return PartialView("_AccountEditFormPartial", new AccountEditModel());
+
         }
     }
 }

@@ -1,0 +1,51 @@
+﻿@model ScoringSystem.Models.AccountEditModel
+
+@Html.DevExpress().FormLayout(fl =>
+{
+    fl.Name = "AccountEditForm";
+    fl.Width = Unit.Percentage(100);
+    fl.Items.Add(m => m.UserName);
+    fl.Items.Add(m => m.StaffId);
+    fl.Items.Add(m => m.RealName);
+    fl.Items.Add(m => m.PassWord,s=> {
+        s.NestedExtension().TextBox(c =>
+        {
+            c.Properties.NullText = "留空表示不修改密码或使用默认密码:123456";
+            c.Properties.Password = true;
+        });
+    });
+
+
+    fl.Items.Add(m => m.RoleIds, s =>
+    {
+        s.NestedExtension().TokenBox(c =>
+        {
+            c.Properties.Caption = "角色";
+            c.Properties.TextField = "Name";
+            c.Properties.ValueField = "Id";
+            c.Properties.DataSource = ViewBag.Roles;
+
+        });
+    });
+    fl.Items.Add(c =>
+    {
+        c.ShowCaption = DefaultBoolean.False;
+        c.NestedExtension().Button(btn =>
+        {
+            btn.Name = "update";
+            btn.Text = "更新";
+            btn.ClientSideEvents.Click = "function (s,e) {AccountGridView.UpdateEdit();}";
+        });
+    });
+    fl.Items.Add(c =>
+    {
+        c.ShowCaption = DefaultBoolean.False;
+        c.NestedExtension().Button(btn =>
+        {
+            btn.Name = "cancel";
+            btn.Text = "取消";
+            btn.ClientSideEvents.Click = "function (s,e) {AccountGridView.CancelEdit();}";
+        });
+    });
+
+}).GetHtml()

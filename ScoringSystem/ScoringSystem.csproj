@@ -323,6 +323,7 @@
     <Content Include="Views\Role\_RoldEditFormPartial.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\_AccountGridViewPartial.cshtml" />
+    <Content Include="Views\Account\_AccountEditFormPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

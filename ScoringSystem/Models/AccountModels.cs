@@ -1,9 +1,12 @@
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Globalization;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
@@ -150,4 +153,39 @@ namespace ScoringSystem.Models
         [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
+
+    public class AccountEditModel
+    {
+        public AccountEditModel()
+        { }
+        public AccountEditModel(ApplicationUser user,IQueryable<ApplicationRole> roles)
+        {
+           
+            Id = user.Id;
+            UserName = user.UserName;
+            RealName = user.RealName;
+            StaffId = user.StaffId;
+            List<string> list = new List<string>();
+           
+            foreach (var role in user.Roles)  //把rolesID转换到tokenbox中
+            {
+                this.RoleIds.Add(role.RoleId);
+                list.Add(roles.FirstOrDefault(r=>r.Id==role.RoleId).Name);
+            }
+            //把roleId转换为roleName字符串
+            Roles = string.Join(";", list.ToArray());
+        }
+          
+       
+
+        public string Id { get; set; }
+        public string UserName { get; set; }
+        public string StaffId { get; set; }
+        public string RealName { get; set; }
+        public string PassWord { get; set; }
+        public DevExpress.Web.TokenCollection RoleIds { get; set; } = new DevExpress.Web.TokenCollection();
+        public string Roles { get; set; }
+
+    }
+       
 }

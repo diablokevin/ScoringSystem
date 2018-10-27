@@ -34,10 +34,10 @@
             col.Caption = "用户数量";
         });
 
-        settings.SetEditFormTemplateContent(form =>
-        {
-            Html.RenderAction("RoleEditFormPartialAsync", new { Id = form.KeyValue });
-        });
+        //settings.SetEditFormTemplateContent(form =>
+        //{
+        //    Html.RenderAction("RoleEditFormPartialAsync", new { Id = form.KeyValue });
+        //});
     });
     if (ViewData["EditError"] != null)
     {
