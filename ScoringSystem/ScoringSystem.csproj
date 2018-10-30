@@ -191,6 +191,9 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Icon\calendar.png" />
+    <Content Include="Content\Icon\notebook.png" />
+    <Content Include="Content\Icon\table.png" />
     <Content Include="Content\Images\AquaHeader.jpg" />
     <Content Include="Content\Images\BlackGlassHeader.jpg" />
     <Content Include="Content\Images\GlassHeader.jpg" />
@@ -298,7 +301,6 @@
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
     <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Home\GridViewPartialView.cshtml" />
     <Content Include="Views\Role\Index.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
@@ -324,6 +326,11 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\_AccountGridViewPartial.cshtml" />
     <Content Include="Views\Account\_AccountEditFormPartial.cshtml" />
+    <Content Include="Views\Event\_EventCardViewPartial.cshtml" />
+    <Content Include="Views\Score\Index.cshtml" />
+    <Content Include="Views\Score\_ScoreGridViewPartial.cshtml" />
+    <Content Include="Views\Schedule\Index.cshtml" />
+    <Content Include="Views\Schedule\_SchedulerPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -345,6 +352,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\ScheduleController.cs" />
+    <Compile Include="Controllers\ScoreController.cs" />
     <Compile Include="Controllers\SettingController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -353,6 +362,10 @@
     <Compile Include="Migrations\201810250746237_init.cs" />
     <Compile Include="Migrations\201810250746237_init.Designer.cs">
       <DependentUpon>201810250746237_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810271413314_modifyschedule.cs" />
+    <Compile Include="Migrations\201810271413314_modifyschedule.Designer.cs">
+      <DependentUpon>201810271413314_modifyschedule.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -377,6 +390,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201810250746237_init.resx">
       <DependentUpon>201810250746237_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810271413314_modifyschedule.resx">
+      <DependentUpon>201810271413314_modifyschedule.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

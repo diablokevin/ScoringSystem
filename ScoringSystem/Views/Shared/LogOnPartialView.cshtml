@@ -1,12 +1,12 @@
 @if(!Request.IsAuthenticated) {
-    @Html.ActionLink("Register", "Register", "Account") 
-    @: | 
-    @Html.ActionLink("Login", "Login", "Account")
+    @*@Html.ActionLink("×¢²á", "Register", "Account") 
+    @: |*@ 
+    @Html.ActionLink("µÇÂ¼", "Login", "Account")
 }
 else {
  
-    @: Welcome @Html.ActionLink(User.Identity.Name + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+    @: »¶Ó­ @Html.ActionLink(User.Identity.Name + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
  
     @: |
-    @Html.ActionLink("Logout", "LogOff", "Account")
+    @Html.ActionLink("µÇ³ö", "LogOff", "Account")
 }

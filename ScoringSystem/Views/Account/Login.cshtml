@@ -1,10 +1,10 @@
 @{ Layout = "~/Views/Shared/_lightLayout.cshtml"; }
 @model ScoringSystem.Models.LoginModel
 <div class="accountHeader">
-    <h2>Log In</h2>
+    <h2>登录</h2>
     <p>
-        Please enter your username and password. @Html.ActionLink("Register", "Register")
-        if you don't have an account.
+        请输入用户名和密码.
+       @* 如果没有账户请 @Html.ActionLink("注册", "Register").*@
     </p>
     <p style="color:red">@ViewBag.ErrorMessage</p>
 </div>
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
 
     @Html.DevExpress().TextBoxFor(m => m.UserName, tb => {
-        tb.Properties.Caption = "User Name";
+        tb.Properties.Caption = "用户名";
         tb.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
         tb.ShowModelErrors = true;
         tb.Properties.ValidationSettings.Display = Display.Dynamic;
@@ -21,7 +21,7 @@
     }).GetHtml()
     
     @Html.DevExpress().TextBoxFor(m => m.Password, tb => {
-        tb.Properties.Caption = "Password";
+        tb.Properties.Caption = "密码";
         tb.Properties.Password = true;
         tb.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
         tb.ShowModelErrors = true;
@@ -32,12 +32,12 @@
     
     @Html.DevExpress().CheckBox(cb => {
         cb.Name = "RememberMe";
-        cb.Text = "Remember me?";
+        cb.Text = "记住用户名?";
     }).GetHtml()
     <br />
     @Html.DevExpress().Button(b => {
         b.Name = "Button";
-        b.Text = "Log On";
+        b.Text = "登录";
         b.UseSubmitBehavior = true;
     }).GetHtml()
 }
@@ -47,4 +47,4 @@
 @Html.ActionLink("Forgot your password?", "ForgotPassword")
 *@
 <br />
-@Html.Partial("_ExternalLoginsListPartial", new ScoringSystem.Models.ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+@*@Html.Partial("_ExternalLoginsListPartial", new ScoringSystem.Models.ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })*@

@@ -1,0 +1,42 @@
+@{
+    var cardView = Html.DevExpress().CardView(settings => {
+        settings.Name = "EventCardView";
+        settings.CallbackRouteValues = new { Controller = "Event", Action = "EventCardViewPartial" };
+
+
+        settings.SettingsEditing.Mode = CardViewEditingMode.EditForm;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.KeyFieldName = "Id";
+
+        settings.ClientSideEvents.CardClick = "function(s,e){GotoEventView(s,e);}";
+
+        settings.SettingsPager.Visible = false;
+        settings.SettingsBehavior.AllowSelectByCardClick = true;
+
+        
+
+        settings.Columns.Add("Name");
+        settings.Columns.Add("Pro");
+        
+        settings.Columns.Add("TimeLimit");
+
+
+        
+        settings.CardLayoutProperties.Items.Add("Name");
+        settings.CardLayoutProperties.Items.Add("Pro");
+        settings.CardLayoutProperties.Items.Add("TimeLimit");
+    });
+    if (ViewData["EditError"] != null){
+        cardView.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@cardView.Bind(Model).GetHtml()
+
+<script>
+    function GotoEventView(s, e) {
+        var name = e["item"].name;
+        pagename = name;
+        location.href = '/' + name;
+    }
+</script>

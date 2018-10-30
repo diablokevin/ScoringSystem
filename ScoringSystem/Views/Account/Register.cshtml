@@ -2,15 +2,15 @@
 @model ScoringSystem.Models.RegisterModel
 
 <div class="accountHeader">
-    <h2>Create a New Account</h2>
-    <p>Use the form below to create a new account.</p>
+    <h2>注册新用户</h2>
+    
     <p style="color:red">@ViewBag.ErrorMessage</p>
 </div>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
 
     @Html.DevExpress().TextBoxFor(m => m.UserName, tb => {
-        tb.Properties.Caption = "User Name";
+        tb.Properties.Caption = "用户名";
         tb.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
         tb.ShowModelErrors = true;
         tb.Properties.ValidationSettings.Display = Display.Dynamic;

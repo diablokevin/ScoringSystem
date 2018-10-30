@@ -24,8 +24,12 @@
     settings.ControlStyle.CssClass = "headerMenu";
     settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
     settings.Items.Add("主页","");
-    settings.Items.Add("报表","report");
-    settings.Items.Add("设置","setting");
+    settings.Items.Add("报表", "report");
+    if (HttpContext.Current.User.IsInRole("管理员"))
+    {
+        settings.Items.Add("设置", "setting");
+    }
+
     settings.AllowSelectItem = true;
     settings.ClientSideEvents.ItemClick = "function(s,e){ GotoPage(s,e);}";
 

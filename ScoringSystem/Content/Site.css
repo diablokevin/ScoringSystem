@@ -686,3 +686,19 @@ html, body {
 {
     border-top: 0!important;
 }
+
+.myitem {
+    float: left;
+    width: 10em;
+    height: 11em;
+    /*padding:1em;*/
+    /*border-style:solid;
+    border-color:crimson;
+    border-radius:10px;
+    margin:5px;*/
+    text-align: center;
+}
+
+div.clear {
+    clear: both;
+}

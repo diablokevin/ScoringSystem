@@ -65,9 +65,10 @@ namespace ScoringSystem.Models
 
 
         public int EventId { get; set; }
-        public int CompetitorId { get; set; }
-        public int JudgeId { get; set; }
+        public int? CompetitorId { get; set; }
+        public int? JudgeId { get; set; }
 
+        public virtual string Subject { get { return Event.Name; } }
 
         public virtual Competitor Competitor { get; set; }
         public virtual Event Event { get; set; }

@@ -1,1 +1,84 @@
-@Html.Partial("GridViewPartialView")
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+@model IEnumerable<ScoringSystem.Models.Event>
+
+@{
+    if (!Request.IsAuthenticated)
+    {
+        <h1>请点击页面上方登录</h1>
+    }
+    else
+    {
+        if (HttpContext.Current.User.IsInRole("考官"))
+        {
+            <h2>考官</h2>
+            <a href="@Url.Action("Index", "Score")">
+                <div class="myitem">
+                    <img src="~/Content/Icon/notebook.png" />
+                    <br />
+                    <p>评分</p>
+                </div>
+            </a>
+            <a href="@Url.Action("Index", "Schedule")">
+                <div class="myitem">
+                    <img src="~/Content/Icon/calendar.png" />
+                    <br />
+                    <p>相关赛程</p>
+                </div>
+            </a>
+            <div class="clear"></div>
+        }
+        if (HttpContext.Current.User.IsInRole("选手"))
+        {
+            <h2>参赛选手</h2>
+            <a href="@Url.Action("Index", "Score")">
+                <div class="myitem">
+
+                    <img src="~/Content/Icon/table.png" />
+                    <br />
+                    <p>比赛成绩</p>
+                </div>
+            </a>
+
+            <a href="@Url.Action("Index", "Schedule")">
+                <div class="myitem">
+                    <img src="~/Content/Icon/calendar.png" />
+                    <br />
+                    <p>相关赛程</p>
+                </div>
+            </a>
+            <div class="clear"></div>
+        }
+        if (HttpContext.Current.User.IsInRole("管理员"))
+        {
+            <h2>管理员</h2>
+            <a href="@Url.Action("Index", "Score")">
+                <div class="myitem">
+                    <img src="~/Content/Icon/notebook.png" />
+                    <br />
+                    <p>评分</p>
+                </div>
+            </a>
+
+            <a href="@Url.Action("Index", "Score")">
+                <div class="myitem">
+
+                    <img src="~/Content/Icon/table.png" />
+                    <br />
+                    <p>比赛成绩</p>
+                </div>
+            </a>
+
+            <a href="@Url.Action("Index", "Schedule")">
+                <div class="myitem">
+                    <img src="~/Content/Icon/calendar.png" />
+                    <br />
+                    <p>相关赛程</p>
+                </div>
+            </a>
+            <div class="clear"></div>
+        }
+    }
+
+}
+
+
