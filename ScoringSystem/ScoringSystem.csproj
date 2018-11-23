@@ -331,6 +331,7 @@
     <Content Include="Views\Score\_ScoreGridViewPartial.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
     <Content Include="Views\Schedule\_SchedulerPartial.cshtml" />
+    <Content Include="Views\Score\_ScoreEditFormPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -367,6 +368,14 @@
     <Compile Include="Migrations\201810271413314_modifyschedule.Designer.cs">
       <DependentUpon>201810271413314_modifyschedule.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811120734083_AddChipsInEvent.cs" />
+    <Compile Include="Migrations\201811120734083_AddChipsInEvent.Designer.cs">
+      <DependentUpon>201811120734083_AddChipsInEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811130603333_allowNullDataInSchedule.cs" />
+    <Compile Include="Migrations\201811130603333_allowNullDataInSchedule.Designer.cs">
+      <DependentUpon>201811130603333_allowNullDataInSchedule.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -393,6 +402,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810271413314_modifyschedule.resx">
       <DependentUpon>201810271413314_modifyschedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811120734083_AddChipsInEvent.resx">
+      <DependentUpon>201811120734083_AddChipsInEvent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811130603333_allowNullDataInSchedule.resx">
+      <DependentUpon>201811130603333_allowNullDataInSchedule.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

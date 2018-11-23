@@ -142,5 +142,15 @@ namespace ScoringSystem.Controllers
 
             return View();
         }
+
+        public ActionResult GetCompetitorsByCompanyId(int id)
+        {
+            var competitors = db.Competitors.Where(x => x.CompanyId == id).Select(x => new { x.Id, x.Name });
+            return GridViewExtension.GetComboBoxCallbackResult(p => {
+                p.TextField = "Name";
+                p.ValueField = "Id";
+                p.BindList(competitors);
+            });
+        }
     }
 }

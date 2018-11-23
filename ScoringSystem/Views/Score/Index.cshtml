@@ -2,6 +2,15 @@
     Layout = "~/Views/Shared/_lightLayout.cshtml";
 }
 
+<script>
+    function OnSelectedCompanyChanged() {
+        ScoreEditForm.GetItemByName("CompetitorId").PerformCallback();
+    }
 
+    function CompetitorComboBox_BeginCallback(s, e) {
+        e.customArgs["id"] = ScoreEditForm.GetItemByName("Competitor.CompanyId").GetValue();
+    }
+</script>
 
 @Html.Action("ScoreGridViewPartial")
+

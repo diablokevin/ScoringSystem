@@ -1,41 +1,62 @@
-﻿using DevExpress.Web.Mvc;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-
 namespace ScoringSystem.Controllers
 {
     public class ScoreController : Controller
     {
         // GET: Score
-        public ActionResult Index()
-        {
-            return View();
-        }
-        public ActionResult Index(int eventID)
-        {
-            var scores = from score in db.Schedules
-                         where score.EventId == eventID
-                         select score;
-
-            ViewBag.eventID = eventID;
-
-         
-            ViewBag.eventTitle = db.Events.Find(eventID).Name + "|" + db.Events.Find(eventID).Pro;
-            return View(scores.ToList().OrderByDescending(x => x.JudgeTime));
-
-         
-        }
-
         ScoringSystem.Models.ScoreDbContext db = new ScoringSystem.Models.ScoreDbContext();
+        public ActionResult Index(int? eventID)
+        {
+            if (eventID == null)
+            {
+                var scores = db.Schedules.Include(s => s.Event).Include(s => s.Competitor);
+                return View(scores.ToList().OrderByDescending(x => x.JudgeTime));
+            }
+            else
+            {
+                var scores = db.Schedules.Where(s => s.EventId == eventID);
+                ViewBag.eventID = eventID;
+                ViewBag.eventTitle = db.Events.Find(eventID).Name + "|" + db.Events.Find(eventID).Pro;
+                return View(scores.ToList().OrderByDescending(x => x.JudgeTime));
+            }
+            //var scores = from score in db.Schedules
+            //             where score.EventId == eventID
+            //             select score;
+
+            //ViewBag.eventID = eventID;
+
+
+            //ViewBag.eventTitle = db.Events.Find(eventID).Name + "|" + db.Events.Find(eventID).Pro;
+            //return View(scores.ToList().OrderByDescending(x => x.JudgeTime));
+
+
+        }
+
+
 
         [ValidateInput(false)]
         public ActionResult ScoreGridViewPartial()
         {
             var model = db.Schedules;
+           // ViewBag.Eventlist = db.Events.ToList();
             return PartialView("_ScoreGridViewPartial", model.ToList());
+        }
+
+        public ActionResult ScoreEditFormPartial(int? Id)
+        {
+            ViewBag.Eventlist = db.Events.ToList();
+            ViewBag.Companylist = db.Companies.ToList();
+            if (Id != null)
+            { 
+                var model = db.Schedules.Find(Id);
+
+                return PartialView("_ScoreEditFormPartial", model ?? new Models.Schedule());
+            }
+            return PartialView("_ScoreEditFormPartial", new Models.Schedule());
+
         }
 
         [HttpPost, ValidateInput(false)]

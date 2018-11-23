@@ -1,0 +1,68 @@
+﻿@model ScoringSystem.Models.Schedule
+
+@Html.DevExpress().FormLayout(flSettings =>
+{
+    flSettings.Name = "ScoreEditForm";
+    flSettings.Width = Unit.Percentage(100);
+    flSettings.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+    flSettings.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
+    flSettings.ColCount = 2;
+    flSettings.Items.Add(i =>
+    {
+        i.FieldName = "EventId";
+        i.NestedExtension().ComboBox(s =>
+        {
+            s.Properties.TextField = "Name";
+            s.Properties.ValueField = "Id";
+            s.Properties.ValueType = typeof(int);
+            s.Properties.DataSource = ViewBag.Eventlist;
+        });
+    });
+
+    flSettings.Items.Add(i => i.Competitor.CompanyId, c => {
+        c.NestedExtension().ComboBox(s => {
+            s.Properties.TextField = "Name";
+            s.Properties.ValueField = "Id";
+            s.Properties.ValueType = typeof(int);
+            s.Properties.DataSource = ViewBag.Companylist;
+            s.Properties.ClientSideEvents.SelectedIndexChanged = "OnSelectedCompanyChanged";
+        });
+    });
+
+    flSettings.Items.Add(i =>i.CompetitorId, c =>
+    {
+        c.NestedExtension().ComboBox(s =>
+        {
+            s.Properties.TextField = "Name";
+            s.Properties.ValueField = "Id";
+            s.Properties.ValueType = typeof(int);
+            s.CallbackRouteValues = new { Controller = "Competitor", Action = "GetCompetitorsByCompanyId"};
+            s.Properties.ClientSideEvents.BeginCallback = "CompetitorComboBox_BeginCallback";
+        });
+    });
+
+
+    flSettings.Items.AddEmptyItem();
+    flSettings.Items.Add(i =>
+    {
+        i.ShowCaption = DefaultBoolean.False;
+    }).SetNestedContent(() =>
+    {
+        ViewContext.Writer.Write("<div style='float:right'>");
+        Html.DevExpress().Button(btnSettings =>
+        {
+            btnSettings.Name = "btnUpdate";
+            btnSettings.Text = "更新";
+            btnSettings.ClientSideEvents.Click = "function(s, e){ ScoreGridView.UpdateEdit(); }";
+        }).Render();
+        Html.DevExpress().Button(btnSettings =>
+        {
+            btnSettings.Name = "btnCancel";
+            btnSettings.Text = "Cancel";
+            btnSettings.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
+            btnSettings.ClientSideEvents.Click = "function(s, e){ ScoreGridView.CancelEdit(); }";
+        }).Render();
+        ViewContext.Writer.Write("</div>");
+    });
+
+}).GetHtml()

@@ -1,44 +1,158 @@
 @{
-	var grid = Html.DevExpress().GridView(settings => {
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
         settings.Name = "ScoreGridView";
-        settings.CallbackRouteValues = new { Controller = "Score", Action = "ScoreGridViewPartial" };
+        settings.CallbackRouteValues = new
+        {
+            Controller = "Score",
+            Action = "ScoreGridViewPartial" };
 
-				settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Score", Action = "ScoreGridViewPartialAddNew" };
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Score", Action = "ScoreGridViewPartialAddNew" };
         settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Score", Action = "ScoreGridViewPartialUpdate" };
         settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Score", Action = "ScoreGridViewPartialDelete" };
-        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditForm;
         settings.SettingsBehavior.ConfirmDelete = true;
+        settings.Width = Unit.Percentage(100);
 
-		settings.CommandColumn.Visible = true;
-        settings.CommandColumn.ShowNewButton = true;
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+        settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 600;
+        settings.SettingsBehavior.AllowEllipsisInText = true;
+
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButtonInHeader = true;
+       
         settings.CommandColumn.ShowDeleteButton = true;
         settings.CommandColumn.ShowEditButton = true;
+        settings.CommandColumn.AdaptivePriority = 3;
+        settings.CommandColumn.MinWidth = 100;
 
-		settings.KeyFieldName = "Id";
 
-		settings.SettingsPager.Visible = true;
-		settings.Settings.ShowGroupPanel = true;
-		settings.Settings.ShowFilterRow = true;
-		settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.CommandColumn.Width = Unit.Percentage(18);
 
-		settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
-		settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
-		settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
-		settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
-		settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
 
-				settings.Columns.Add("TimeConsume");
-				settings.Columns.Add("Score");
-				settings.Columns.Add("JudgeTime");
-				settings.Columns.Add("ModifyTime");
-				settings.Columns.Add("EventId");
-				settings.Columns.Add("CompetitorId");
-				settings.Columns.Add("JudgeId");
-				settings.Columns.Add("Competitor");
-				settings.Columns.Add("Event");
-				settings.Columns.Add("Judge");
-			});
-		if (ViewData["EditError"] != null){
+
+        settings.KeyFieldName = "Id";
+
+        //settings.SettingsPager.Visible = true;
+        //settings.Settings.ShowGroupPanel = true;
+        //settings.Settings.ShowFilterRow = true;
+        //settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+
+        ////settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        //settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        //settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        ////settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        //settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth =600;
+        settings.Columns.Add("Event.Name");
+        settings.Columns.Add("Competitor.Company.Name","¹«Ë¾Ãû³Æ");
+        settings.Columns.Add("Competitor.Name");
+        settings.Columns.Add("TimeConsume");
+        settings.Columns.Add("Score");
+        settings.Columns.Add("Judge.Name","²ÃÅÐ");
+        settings.Columns.Add("JudgeTime");
+        settings.Columns.Add("ModifyTime");
+        //settings.Columns.Add(c =>
+        //{
+
+        //    c.FieldName = "EventId";
+        //    c.AllowTextTruncationInAdaptiveMode = true;
+        //    c.MinWidth = 100;
+        //    c.Width = Unit.Percentage(27);
+        //    c.EditorProperties().ComboBox(p =>
+        //    {
+        //        p.TextField = "Name";
+        //        p.ValueField = "Id";
+        //        p.ValueType = typeof(int);
+        //        p.DataSource = ViewBag.Eventlist;
+
+        //    });
+
+        //});
+        ////settings.Columns.Add(c =>
+        ////{
+        ////    c.FieldName = "TimeConsume";
+        ////    c.EditorProperties().TimeEdit(p =>
+        ////    {
+        ////        //p.AllowUserInput = true;
+        ////        //p.AllowNull = true;
+        ////        p.EditFormatString = "hh:mm:ss";
+
+        ////        p.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithTooltip;
+        ////        //p.ValidationSettings.Display = Display.Static;
+        ////    });
+
+
+        ////});
+        //settings.Columns.Add(c =>
+        //{
+        //    c.FieldName = "TimeConsume_minute";
+        //    c.AdaptivePriority = 1;
+        //    c.MinWidth = 200;
+
+        //    // c.Width = Unit.Percentage(30);
+        //    c.EditorProperties().SpinEdit(p =>
+        //    {
+        //        p.NumberType = SpinEditNumberType.Integer;
+        //        p.MinValue = 0;
+        //        p.MaxValue = 59;
+        //    });
+        //});
+        //settings.Columns.Add(c =>
+        //{
+        //    c.FieldName = "TimeConsume_second";
+        //    c.AdaptivePriority = 2;
+        //    c.MinWidth = 200;
+
+        //    // c.Width = Unit.Percentage(30);
+        //    c.EditorProperties().SpinEdit(p =>
+        //    {
+        //        p.NumberType = SpinEditNumberType.Integer;
+        //        p.MinValue = 0;
+        //        p.MaxValue = 59;
+        //    });
+        //});
+        //settings.Columns.Add(c =>
+        //{
+        //    c.FieldName = "Score";
+        //    //   c.AdaptivePriority = 3;
+        //    //c.MinWidth = 1000;
+        //    // c.Width = Unit.Percentage(30);
+        //    c.EditorProperties().SpinEdit(p =>
+        //    {
+        //        p.NumberType = SpinEditNumberType.Integer;
+        //        p.MinValue = 0;
+        //        p.MaxValue = 100;
+
+        //    });
+
+
+        //});
+
+        settings.SetEditFormTemplateContent(c => {
+            Html.RenderAction("ScoreEditFormPartial", new { Id = c.KeyValue });
+        });
+
+
+        //settings.Columns.Add("JudgeTime");
+        //settings.Columns.Add("ModifyTime");
+
+        //settings.Columns.Add("CompetitorId");
+        //settings.Columns.Add("JudgeId");
+        ////settings.Styles.Cell.Wrap = DefaultBoolean.False;
+        //settings.CellEditorInitialize = (s, e) =>
+        //{
+        //    ((ASPxEdit)e.Editor).ValidationSettings.Display = Display.Dynamic;
+        //};
+    });
+    if (ViewData["EditError"] != null){
         grid.SetEditErrorText((string)ViewData["EditError"]);
     }
 }

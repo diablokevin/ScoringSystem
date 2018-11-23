@@ -4,7 +4,11 @@
 
 
 @Html.ActionLink("返回","Index")
-
+<p>
+    提交数量：@ViewBag.Count
+    成功数量：@ViewBag.SuccessCount
+    失败数量：@ViewBag.FaultCount
+</p>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -20,7 +24,7 @@
          control.Height = 300;
          control.ControlStyle.VerticalAlign = VerticalAlign.Top;
 
-         control.Properties.NullText = "名称 专业";
+         control.Properties.NullText = "名称 专业 限时";
 
 
      }).GetHtml()
@@ -47,6 +51,7 @@
             <tr>
                 <th>名称</th>
                 <th>专业</th>
+                <th>限时</th>
             </tr>
             @if (ViewBag.Content != null)
             {
@@ -61,6 +66,9 @@
                             </td>
                             <td>
                                 @item.Split('\t')[1]
+                            </td>
+                            <td>
+                                @item.Split('\t')[2]
                             </td>
                         </tr>
                     }
