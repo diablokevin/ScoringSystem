@@ -730,5 +730,66 @@ namespace ScoringSystem.Controllers {
             return PartialView("_AccountEditFormPartial", new AccountEditModel());
 
         }
+
+        public ActionResult Multi(int? id)
+        { return View(); }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Multi()
+        {
+            if (ModelState.IsValid)
+            {
+                string content = Request["List"];
+                ViewBag.Content = content;
+
+                List<string> t = content.Split('\r', '\n').ToList();
+                ViewBag.Count = t.Count;
+                ViewBag.FaultCount = 0;
+                ViewBag.SuccessCount=0;
+
+                foreach (string item in t)
+                {
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                       
+                        try
+                        {
+                            string name = item.Split('\t')[0];
+                            string staffid = item.Split('\t')[1];
+                            string role = item.Split('\t')[2];
+                            string password = item.Split('\t')[3];
+                            var user = new ApplicationUser { UserName = staffid, StaffId = staffid, RealName = name };
+
+                            var result = await UserManager.CreateAsync(user, string.IsNullOrEmpty(password) ? password : "123456");
+                            if (result.Succeeded)
+                            {
+                               
+                                    UserManager.AddToRole(user.Id, RoleManager.FindByName(role).Name);
+                                ViewBag.SuccessCount++;
+
+
+                            }
+                            else
+                            {
+                                ViewBag.FaultCount++;
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            ViewData["EditError"] = e.Message;
+                            ViewBag.FaultCount++;
+                        }
+
+                    }
+                }
+             
+                return View();
+            }
+
+
+            return View();
+        }
     }
 }

@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "~/Views/Shared/_mainLayout.cshtml";
+}
+
+
+
+@Html.Action("JudgeGridViewPartial")
+
+
+@Html.ActionLink("批量录入", "Multi")
+
+
+<script>
+    SetLeftNarBarItemSelect("peopleSetting", "judge");
+</script>

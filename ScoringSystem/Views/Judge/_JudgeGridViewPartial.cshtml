@@ -1,0 +1,49 @@
+@{
+    var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "JudgeGridView";
+        settings.CallbackRouteValues = new { Controller = "Judge", Action = "JudgeGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Judge", Action = "JudgeGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Judge", Action = "JudgeGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Judge", Action = "JudgeGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("StaffId");
+        settings.Columns.Add("Name");
+        settings.Columns.Add(c=> {
+            c.FieldName = "EventId";
+            c.Caption = "ÏîÄ¿";
+            c.EditorProperties().ComboBox(s=> {
+                s.TextField = "Name";
+                s.ValueField = "Id";
+                s.ValueType = typeof(int);
+                s.DataSource = ViewBag.Eventlist;
+            });
+        });
+
+    });
+    if (ViewData["EditError"] != null){
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

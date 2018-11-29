@@ -1,13 +1,9 @@
 ﻿@{
-    Layout = "~/Views/Shared/_mainLayout.cshtml";
+    Layout = "~/Views/Shared/_lightLayout.cshtml";
 }
 
-
-
+@Html.ActionLink("返回", "Index" ,"Home")
 @Html.Action("ScheduleGridViewPartial")
 
 @Html.ActionLink("批量录入", "Multi")
 
-<script>
-    SetLeftNarBarItemSelect("eventSetting", "schedule");
-</script>

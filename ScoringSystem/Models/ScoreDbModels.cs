@@ -175,6 +175,7 @@ namespace ScoringSystem.Models
         // public string UserId { get; set; }
         public Nullable<int> CompanyId { get; set; }
         public Nullable<int> EventId { get; set; }
+        [Display(Name = "员工号")]
         public string StaffId { get; set; }
 
         public virtual Company Company { get; set; }
