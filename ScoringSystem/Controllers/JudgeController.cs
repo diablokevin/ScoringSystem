@@ -107,7 +107,8 @@ namespace ScoringSystem.Controllers
 
                 List<string> t = content.Split('\r', '\n').ToList();
                 ViewBag.Count = t.Count;
-
+                ViewBag.FaultCount = 0;
+                ViewBag.SuccessCount = 0;
                 foreach (string item in t)
                 {
                     if (!string.IsNullOrEmpty(item))
