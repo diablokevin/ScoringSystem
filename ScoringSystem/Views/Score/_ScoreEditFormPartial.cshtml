@@ -1,5 +1,7 @@
 ﻿@model ScoringSystem.Models.Schedule
 
+
+
 @Html.DevExpress().FormLayout(flSettings =>
 {
     flSettings.Name = "ScoreEditForm";
@@ -10,17 +12,22 @@
     flSettings.Items.Add(i =>
     {
         i.FieldName = "EventId";
+       
         i.NestedExtension().ComboBox(s =>
         {
             s.Properties.TextField = "Name";
             s.Properties.ValueField = "Id";
             s.Properties.ValueType = typeof(int);
             s.Properties.DataSource = ViewBag.Eventlist;
+
         });
     });
 
     flSettings.Items.Add(i => i.Competitor.CompanyId, c => {
+
+
         c.NestedExtension().ComboBox(s => {
+            s.Name = "CompanyId";
             s.Properties.TextField = "Name";
             s.Properties.ValueField = "Id";
             s.Properties.ValueType = typeof(int);
@@ -31,11 +38,14 @@
 
     flSettings.Items.Add(i =>i.CompetitorId, c =>
     {
+
         c.NestedExtension().ComboBox(s =>
         {
+            s.Name  = "CompetitorId";
             s.Properties.TextField = "Name";
             s.Properties.ValueField = "Id";
             s.Properties.ValueType = typeof(int);
+
             s.CallbackRouteValues = new { Controller = "Competitor", Action = "GetCompetitorsByCompanyId"};
             s.Properties.ClientSideEvents.BeginCallback = "CompetitorComboBox_BeginCallback";
         });
@@ -43,6 +53,69 @@
 
 
     flSettings.Items.AddEmptyItem();
+    flSettings.Items.AddGroupItem(g => {
+
+        g.ColCount = 1;
+
+        //g.GroupBoxDecoration = GroupBoxDecoration.Box;
+        g.Caption = "用时";
+        // g.ShowCaption = DefaultBoolean.True;
+        g.Items.Add(i => i.TimeConsume_minute, c => {
+            c.Caption = "分";
+            c.NestedExtension().SpinEdit(s =>
+            {
+                s.Properties.NumberType = SpinEditNumberType.Integer;
+                s.Properties.MinValue = 0;
+                s.Properties.MaxValue = 59;
+            });
+        });
+        g.Items.Add(i => i.TimeConsume_second, c =>
+        {
+            c.Caption = "秒";
+            c.NestedExtension().SpinEdit(s =>
+            {
+                s.Properties.NumberType = SpinEditNumberType.Integer;
+                s.Properties.MinValue = 0;
+                s.Properties.MaxValue = 59;
+            });
+        });
+    });
+
+    //flSettings.Items.Add(i => i.TimeConsume_minute, c => {
+    //    c.Caption = "分";
+    //    c.ColSpan = 1;
+
+    //    c.NestedExtension().SpinEdit(s => {
+    //        s.Properties.NumberType = SpinEditNumberType.Integer;
+    //        s.Properties.MinValue = 0;
+    //        s.Properties.MaxValue = 59;
+    //    });
+    //});
+
+    //flSettings.Items.Add(i => i.TimeConsume_second, c =>
+    //{
+    //    c.Caption = "秒";
+    //    c.NestedExtension().SpinEdit(s =>
+    //    {
+    //        s.Properties.NumberType = SpinEditNumberType.Integer;
+    //        s.Properties.MinValue = 0;
+    //        s.Properties.MaxValue = 59;
+    //    });
+    //});
+
+    flSettings.Items.Add(i => i.Score, c =>
+    {
+
+        c.NestedExtension().SpinEdit(s =>
+        {
+            s.Properties.NumberType = SpinEditNumberType.Integer;
+            s.Properties.MinValue = 0;
+            s.Properties.MaxValue = 100;
+        });
+    });
+
+
+
     flSettings.Items.Add(i =>
     {
         i.ShowCaption = DefaultBoolean.False;
@@ -58,7 +131,7 @@
         Html.DevExpress().Button(btnSettings =>
         {
             btnSettings.Name = "btnCancel";
-            btnSettings.Text = "Cancel";
+            btnSettings.Text = "取消";
             btnSettings.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
             btnSettings.ClientSideEvents.Click = "function(s, e){ ScoreGridView.CancelEdit(); }";
         }).Render();

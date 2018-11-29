@@ -1,0 +1,50 @@
+﻿@{
+  
+
+                Layout = "~/Views/Shared/_lightLayout.cshtml";
+}
+
+
+@Html.ActionLink("返回", "Index")
+@{
+    if (ViewBag.Count != null)
+    {
+        <p>数据行数：@ViewBag.Count</p>
+        <p>成功提交行数：@ViewBag.SuccessCount</p>
+    }
+
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+
+    @Html.DevExpress().Memo(control =>
+     {
+         control.Name = "List";
+         control.Properties.Caption = "批量录入";
+         control.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+         control.Width = Unit.Pixel(300);
+
+         control.Height = 300;
+         control.ControlStyle.VerticalAlign = VerticalAlign.Top;
+
+         control.Properties.NullText = "日期 项目 选手编号 开始 结束";
+
+
+     }).GetHtml()
+
+    @Html.DevExpress().Button(control =>
+{
+    control.Name = "submitbtn";
+    control.Text = "提交";
+    control.UseSubmitBehavior = true;
+}).GetHtml()
+
+
+}
+
+<div>
+    @Html.ActionLink("返回", "ScheduleIndex")
+</div>
+

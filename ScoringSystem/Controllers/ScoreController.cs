@@ -2,6 +2,10 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using System.Collections.Generic;
+using ScoringSystem.Models;
+using DevExpress.Web.Mvc;
+
 namespace ScoringSystem.Controllers
 {
     public class ScoreController : Controller
@@ -41,7 +45,8 @@ namespace ScoringSystem.Controllers
         public ActionResult ScoreGridViewPartial()
         {
             var model = db.Schedules;
-           // ViewBag.Eventlist = db.Events.ToList();
+            ViewBag.Eventlist = db.Events.ToList();
+            ViewBag.Companylist = db.Companies.ToList();
             return PartialView("_ScoreGridViewPartial", model.ToList());
         }
 
@@ -67,6 +72,8 @@ namespace ScoringSystem.Controllers
             {
                 try
                 {
+                    item.JudgeTime = DateTime.Now;
+                    item.ModifyTime = DateTime.Now;
                     model.Add(item);
                     db.SaveChanges();
                 }
@@ -90,6 +97,7 @@ namespace ScoringSystem.Controllers
                     var modelItem = model.FirstOrDefault(it => it.Id == item.Id);
                     if (modelItem != null)
                     {
+                        modelItem.ModifyTime = DateTime.Now;
                         this.UpdateModel(modelItem);
                         db.SaveChanges();
                     }
@@ -124,5 +132,74 @@ namespace ScoringSystem.Controllers
             return PartialView("_ScoreGridViewPartial", model.ToList());
         }
 
+        public ActionResult Multi(int? id)
+        { return View(); }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Multi()
+        {
+            if (ModelState.IsValid)
+            {
+                string content = Request["List"];
+                ViewBag.Content = content;
+
+                List<string> t = content.Split('\r','\n').ToList();
+                ViewBag.Count = t.Count;
+
+                foreach (string item in t)
+                {
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                        Schedule schedule = new Schedule();
+                        try
+                        {
+                            string date =  item.Split('\t')[0];
+                            string eventName = item.Split('\t')[1];
+                            string competitorNum = item.Split('\t')[2];
+                            string  begin = item.Split('\t')[3];
+                            string end = item.Split('\t')[4];
+
+                            schedule.PlanBeginTime = Convert.ToDateTime(date + " " + begin);
+                            schedule.PlanEndTime = Convert.ToDateTime(date + " " + end);
+                            schedule.EventId = db.Events.Where(c => c.Name == eventName).First().Id;
+                            var testData = db.Competitors.ToList();
+                            var competitors= db.Competitors.Where(c => c.Race_num == competitorNum);
+
+                            schedule.CompetitorId = competitors.FirstOrDefault().Id;
+                            db.Schedules.Add(schedule);
+
+                            
+                        }
+                        catch (Exception e)
+                        {
+                            ViewData["EditError"] = e.Message;
+                        }
+                        finally
+                        {
+                            ViewBag.SuccessCount= db.SaveChanges();
+                        }
+
+                    }
+                }
+                return View();
+            }
+
+
+            return View();
+        }
+
+        public ActionResult ScheduleIndex()
+        {
+            return View();
+        }
+
+
+        [ValidateInput(false)]
+        public ActionResult ScheduleGridViewPartial()
+        {
+            var model = db.Schedules;
+            return PartialView("_ScheduleGridViewPartial", model.ToList());
+        }
     }
 }

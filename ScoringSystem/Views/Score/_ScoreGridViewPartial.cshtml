@@ -27,7 +27,7 @@
 
         settings.CommandColumn.Visible = true;
         settings.CommandColumn.ShowNewButtonInHeader = true;
-       
+
         settings.CommandColumn.ShowDeleteButton = true;
         settings.CommandColumn.ShowEditButton = true;
         settings.CommandColumn.AdaptivePriority = 3;
@@ -40,42 +40,55 @@
 
         settings.KeyFieldName = "Id";
 
-        //settings.SettingsPager.Visible = true;
-        //settings.Settings.ShowGroupPanel = true;
-        //settings.Settings.ShowFilterRow = true;
-        //settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
 
 
-        ////settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
-        //settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
-        //settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
-        ////settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
-        //settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth =600;
-        settings.Columns.Add("Event.Name");
-        settings.Columns.Add("Competitor.Company.Name","公司名称");
-        settings.Columns.Add("Competitor.Name");
-        settings.Columns.Add("TimeConsume");
-        settings.Columns.Add("Score");
-        settings.Columns.Add("Judge.Name","裁判");
-        settings.Columns.Add("JudgeTime");
-        settings.Columns.Add("ModifyTime");
-        //settings.Columns.Add(c =>
-        //{
+        settings.Columns.Add(c=> {
+            c.FieldName = "Event.Name";
+            c.AdaptivePriority = 1;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Competitor.Name";
+            c.AdaptivePriority = 1;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Competitor.Company.Name";
+            c.Caption = "公司";
+            c.AdaptivePriority = 2;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "TimeConsume";
+            c.AdaptivePriority = 1;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Score";
+            c.AdaptivePriority = 1;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Judge.Name";
+            c.Caption = "裁判";
+            c.AdaptivePriority = 4;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "JudgeTime";
+            c.AdaptivePriority = 4;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ModifyTime";
+            c.AdaptivePriority = 4;
+        });
+       
 
-        //    c.FieldName = "EventId";
-        //    c.AllowTextTruncationInAdaptiveMode = true;
-        //    c.MinWidth = 100;
-        //    c.Width = Unit.Percentage(27);
-        //    c.EditorProperties().ComboBox(p =>
-        //    {
-        //        p.TextField = "Name";
-        //        p.ValueField = "Id";
-        //        p.ValueType = typeof(int);
-        //        p.DataSource = ViewBag.Eventlist;
-
-        //    });
-
-        //});
         ////settings.Columns.Add(c =>
         ////{
         ////    c.FieldName = "TimeConsume";
@@ -136,21 +149,13 @@
 
         //});
 
-        settings.SetEditFormTemplateContent(c => {
+        settings.SetEditFormTemplateContent(c =>
+        {
             Html.RenderAction("ScoreEditFormPartial", new { Id = c.KeyValue });
         });
 
 
-        //settings.Columns.Add("JudgeTime");
-        //settings.Columns.Add("ModifyTime");
 
-        //settings.Columns.Add("CompetitorId");
-        //settings.Columns.Add("JudgeId");
-        ////settings.Styles.Cell.Wrap = DefaultBoolean.False;
-        //settings.CellEditorInitialize = (s, e) =>
-        //{
-        //    ((ASPxEdit)e.Editor).ValidationSettings.Display = Display.Dynamic;
-        //};
     });
     if (ViewData["EditError"] != null){
         grid.SetEditErrorText((string)ViewData["EditError"]);

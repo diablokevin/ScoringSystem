@@ -3,12 +3,14 @@
 }
 
 <script>
-    function OnSelectedCompanyChanged() {
-        ScoreEditForm.GetItemByName("CompetitorId").PerformCallback();
+    function OnSelectedCompanyChanged(s, e) {
+        var s = ASPxClientControl.GetControlCollection().GetByName("CompetitorId");
+        s.PerformCallback();
+
     }
 
     function CompetitorComboBox_BeginCallback(s, e) {
-        e.customArgs["id"] = ScoreEditForm.GetItemByName("Competitor.CompanyId").GetValue();
+        e.customArgs["id"] = ASPxClientControl.GetControlCollection().GetByName("CompanyId").GetValue();
     }
 </script>
 

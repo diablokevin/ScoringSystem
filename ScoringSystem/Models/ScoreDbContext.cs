@@ -24,6 +24,7 @@
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Competitor> Competitors { get; set; }
         public virtual DbSet<Event> Events { get; set; }
+        public virtual DbSet<Chip> Chips { get; set; }
         public virtual DbSet<Judge> Judges { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
        

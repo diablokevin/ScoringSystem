@@ -104,7 +104,7 @@ namespace ScoringSystem.Controllers
                 string content = Request["List"];
                 ViewBag.Content = content;
 
-                List<string> t = content.Split('\n').ToList();
+                List<string> t = content.Split('\r','\n').ToList();
                 ViewBag.Count = t.Count;
 
                 foreach (string item in t)
@@ -145,7 +145,8 @@ namespace ScoringSystem.Controllers
 
         public ActionResult GetCompetitorsByCompanyId(int id)
         {
-            var competitors = db.Competitors.Where(x => x.CompanyId == id).Select(x => new { x.Id, x.Name });
+            var competitors = db.Competitors.Where(x => x.CompanyId == id).Select(x => new { x.Id, x.Name }).ToList();
+           
             return GridViewExtension.GetComboBoxCallbackResult(p => {
                 p.TextField = "Name";
                 p.ValueField = "Id";

@@ -271,7 +271,9 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\ChangePasswordSuccess.cshtml" />
@@ -332,6 +334,9 @@
     <Content Include="Views\Schedule\Index.cshtml" />
     <Content Include="Views\Schedule\_SchedulerPartial.cshtml" />
     <Content Include="Views\Score\_ScoreEditFormPartial.cshtml" />
+    <Content Include="Views\Score\Multi.cshtml" />
+    <Content Include="Views\Score\ScheduleIndex.cshtml" />
+    <Content Include="Views\Score\_ScheduleGridViewPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
