@@ -3,6 +3,7 @@
 }
 
 
+
 @Html.ActionLink("返回", "Index")
 <p>
     提交数量：@ViewBag.Count
@@ -25,7 +26,7 @@
          control.Height = 300;
          control.ControlStyle.VerticalAlign = VerticalAlign.Top;
 
-         control.Properties.NullText = "姓名 员工号 角色 密码";
+         control.Properties.NullText = "公司 姓名 员工号 专业 比赛编号";
 
 
      }).GetHtml()

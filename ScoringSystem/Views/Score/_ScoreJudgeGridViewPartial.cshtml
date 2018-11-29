@@ -1,0 +1,80 @@
+@{
+    var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "ScoreJudgeGridView";
+        settings.CallbackRouteValues = new { Controller = "Score", Action = "ScoreJudgeGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Score", Action = "ScoreJudgeGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Score", Action = "ScoreJudgeGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Score", Action = "ScoreJudgeGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+        settings.Width = Unit.Percentage(100);
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+        settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 600;
+        settings.SettingsBehavior.AllowEllipsisInText = true;
+
+
+        settings.CommandColumn.Visible = true;
+        // settings.CommandColumn.ShowNewButtonInHeader = true;
+
+        //settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+        settings.CommandColumn.AdaptivePriority = 1;
+        settings.CommandColumn.MinWidth = 100;
+
+
+        settings.CommandColumn.Width = Unit.Percentage(18);
+
+
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Event.Name";
+            c.AdaptivePriority = 3;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Competitor.Name";
+            c.AdaptivePriority = 1;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Competitor.Company.Name";
+            c.Caption = "¹«Ë¾";
+            c.AdaptivePriority = 2;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "PlanBeginTime";
+            c.AdaptivePriority = 4;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "PlanEndTime";
+            c.AdaptivePriority = 4;
+        });
+
+
+        settings.SetEditFormTemplateContent(c =>
+        {
+            Html.RenderAction("ScoreJudgeEditFormPartial", new { Id = c.KeyValue });
+        });
+
+
+    });
+    if (ViewData["EditError"] != null){
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

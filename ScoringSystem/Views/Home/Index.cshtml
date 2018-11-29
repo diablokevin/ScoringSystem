@@ -15,16 +15,16 @@
                 <div class="myitem">
                     <img src="~/Content/Icon/notebook.png" />
                     <br />
-                    <p>评分</p>
+                    <p>赛程及评分</p>
                 </div>
             </a>
-            <a href="@Url.Action("Index", "Schedule")">
+            @*<a href="@Url.Action("Index", "Schedule")">
                 <div class="myitem">
                     <img src="~/Content/Icon/calendar.png" />
                     <br />
                     <p>相关赛程</p>
                 </div>
-            </a>
+            </a>*@
             <div class="clear"></div>
         }
         if (HttpContext.Current.User.IsInRole("选手"))
@@ -35,17 +35,17 @@
 
                     <img src="~/Content/Icon/table.png" />
                     <br />
-                    <p>比赛成绩</p>
+                    <p>赛程及成绩</p>
                 </div>
             </a>
 
-            <a href="@Url.Action("Index", "Schedule")">
+            @*<a href="@Url.Action("Index", "Schedule")">
                 <div class="myitem">
                     <img src="~/Content/Icon/calendar.png" />
                     <br />
                     <p>相关赛程</p>
                 </div>
-            </a>
+            </a>*@
             <div class="clear"></div>
         }
         if (HttpContext.Current.User.IsInRole("管理员"))
@@ -68,7 +68,7 @@
                 </div>
             </a>
 
-            <a href="@Url.Action("Index", "Schedule")">
+            <a href="@Url.Action("ScheduleIndex", "Score")">
                 <div class="myitem">
                     <img src="~/Content/Icon/calendar.png" />
                     <br />

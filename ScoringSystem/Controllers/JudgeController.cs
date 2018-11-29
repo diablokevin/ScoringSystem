@@ -8,9 +8,9 @@ using ScoringSystem.Models;
 
 namespace ScoringSystem.Controllers
 {
-    public class CompetitorController : Controller
+    public class JudgeController : Controller
     {
-        // GET: Competitor
+        // GET: Judge
         public ActionResult Index()
         {
             ViewBag.PageName = "Setting";
@@ -20,17 +20,17 @@ namespace ScoringSystem.Controllers
         ScoringSystem.Models.ScoreDbContext db = new ScoringSystem.Models.ScoreDbContext();
 
         [ValidateInput(false)]
-        public ActionResult CompetitorGridViewPartial()
+        public ActionResult JudgeGridViewPartial()
         {
-            var model = db.Competitors;
-            ViewBag.CompanyList = db.Companies.ToList();
-            return PartialView("_CompetitorGridViewPartial", model.ToList());
+            ViewBag.Eventlist = db.Events.ToList();
+            var model = db.Judges;
+            return PartialView("_JudgeGridViewPartial", model.ToList());
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult CompetitorGridViewPartialAddNew(ScoringSystem.Models.Competitor item)
+        public ActionResult JudgeGridViewPartialAddNew(ScoringSystem.Models.Judge item)
         {
-            var model = db.Competitors;
+            var model = db.Judges;
             if (ModelState.IsValid)
             {
                 try
@@ -45,12 +45,12 @@ namespace ScoringSystem.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_CompetitorGridViewPartial", model.ToList());
+            return PartialView("_JudgeGridViewPartial", model.ToList());
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult CompetitorGridViewPartialUpdate(ScoringSystem.Models.Competitor item)
+        public ActionResult JudgeGridViewPartialUpdate(ScoringSystem.Models.Judge item)
         {
-            var model = db.Competitors;
+            var model = db.Judges;
             if (ModelState.IsValid)
             {
                 try
@@ -69,12 +69,12 @@ namespace ScoringSystem.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_CompetitorGridViewPartial", model.ToList());
+            return PartialView("_JudgeGridViewPartial", model.ToList());
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult CompetitorGridViewPartialDelete(System.Int32 Id)
+        public ActionResult JudgeGridViewPartialDelete(System.Int32 Id)
         {
-            var model = db.Competitors;
+            var model = db.Judges;
             if (Id >= 0)
             {
                 try
@@ -89,8 +89,9 @@ namespace ScoringSystem.Controllers
                     ViewData["EditError"] = e.Message;
                 }
             }
-            return PartialView("_CompetitorGridViewPartial", model.ToList());
+            return PartialView("_JudgeGridViewPartial", model.ToList());
         }
+
 
         public ActionResult Multi(int? id)
         { return View(); }
@@ -104,30 +105,25 @@ namespace ScoringSystem.Controllers
                 string content = Request["List"];
                 ViewBag.Content = content;
 
-                List<string> t = content.Split('\r','\n').ToList();
+                List<string> t = content.Split('\r', '\n').ToList();
                 ViewBag.Count = t.Count;
 
                 foreach (string item in t)
                 {
                     if (!string.IsNullOrEmpty(item))
                     {
-                         Competitor competitor = new Competitor();
+                        Judge judge = new Judge();
                         try
                         {
-                            string company = item.Split('\t')[0];
+                            string staffid = item.Split('\t')[0];
                             string name = item.Split('\t')[1];
-                            string staffid = item.Split('\t')[2];
-                            string pro = item.Split('\t')[3];
-                            string racenum = item.Split('\t')[4];
-                            IQueryable<Company> companies = db.Companies.Where(x => x.Name.Contains(company));
-                            competitor.CompanyId = companies.FirstOrDefault().Id;
-                            competitor.Name = name;
-                            competitor.StaffId = staffid;
-                            competitor.Pro = pro;
-                            competitor.Race_num = racenum;
+                            string eventName = item.Split('\t')[2];
 
-                            db.Competitors.Add(competitor);
-                            
+                            judge.StaffId = staffid;
+                            judge.Name = name;
+                            judge.EventId = db.Events.Where(c => c.Name == eventName).First().Id;
+                            db.Judges.Add(judge);
+
                         }
                         catch (Exception e)
                         {
@@ -145,15 +141,5 @@ namespace ScoringSystem.Controllers
             return View();
         }
 
-        public ActionResult GetCompetitorsByCompanyId(int id)
-        {
-            var competitors = db.Competitors.Where(x => x.CompanyId == id).Select(x => new { x.Id, x.Name }).ToList();
-           
-            return GridViewExtension.GetComboBoxCallbackResult(p => {
-                p.TextField = "Name";
-                p.ValueField = "Id";
-                p.BindList(competitors);
-            });
-        }
     }
 }

@@ -337,6 +337,14 @@
     <Content Include="Views\Score\Multi.cshtml" />
     <Content Include="Views\Score\ScheduleIndex.cshtml" />
     <Content Include="Views\Score\_ScheduleGridViewPartial.cshtml" />
+    <Content Include="Views\Judge\Index.cshtml" />
+    <Content Include="Views\Judge\_JudgeGridViewPartial.cshtml" />
+    <Content Include="Views\Judge\Multi.cshtml" />
+    <Content Include="Views\Account\Multi.cshtml" />
+    <Content Include="Views\Score\_ScoreJudgeGridViewPartial.cshtml" />
+    <Content Include="Views\Score\_ScoreJudgeEditFormPartial.cshtml" />
+    <Content Include="Views\Score\_ScoreFinishGridViewPartial.cshtml" />
+    <Content Include="Views\Score\_ScoreCompetitorGridViewPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -356,6 +364,7 @@
     <Compile Include="Controllers\CompetitorController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JudgeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
@@ -393,7 +402,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

@@ -1,0 +1,34 @@
+@{
+    var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "ScoreFinishGridView";
+        settings.CallbackRouteValues = new { Controller = "Score", Action = "ScoreFinishGridViewPartial" };
+
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowSelectByRowClick = false;
+        settings.Width = Unit.Percentage(100);
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("Event.Name");
+        settings.Columns.Add("Competitor.Name");
+        settings.Columns.Add("Competitor.Company.Name");
+        settings.Columns.Add("TimeConsume");
+        settings.Columns.Add("Score");
+        settings.Columns.Add("Judge.Name","╡цеп");
+        settings.Columns.Add("JudgeTime");
+        settings.Columns.Add("ModifyTime");
+
+
+
+    });
+}
+@grid.Bind(Model).GetHtml()

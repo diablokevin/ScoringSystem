@@ -14,5 +14,28 @@
     }
 </script>
 
-@Html.Action("ScoreGridViewPartial")
+@if (HttpContext.Current.User.IsInRole("管理员"))
+{
+    @Html.Action("ScoreGridViewPartial")
+}
+
+@if (HttpContext.Current.User.IsInRole("考官"))
+{
+    <h2>待评分</h2>
+    @Html.Action("ScoreJudgeGridViewPartial")
+    <p></p>
+    <h2>已完成</h2>
+    @Html.Action("ScoreFinishGridViewPartial")
+
+}
+
+@if (HttpContext.Current.User.IsInRole("选手"))
+{
+
+
+    @Html.Action("ScoreCompetitorGridViewPartial")
+
+}
+
+
 
