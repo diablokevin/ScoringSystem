@@ -1,11 +1,11 @@
 @{
     var grid = Html.DevExpress().GridView(settings => {
-        settings.Name = "ScoreJudgeGridView";
-        settings.CallbackRouteValues = new { Controller = "Score", Action = "ScoreJudgeGridViewPartial" };
+        settings.Name = "ScheduleJudgeGridView";
+        settings.CallbackRouteValues = new { Controller = "Schedule", Action = "ScheduleJudgeGridViewPartial" };
 
-        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Score", Action = "ScoreJudgeGridViewPartialAddNew" };
-        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Score", Action = "ScoreJudgeGridViewPartialUpdate" };
-        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Score", Action = "ScoreJudgeGridViewPartialDelete" };
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Schedule", Action = "ScheduleJudgeGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Schedule", Action = "ScheduleJudgeGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Schedule", Action = "ScheduleJudgeGridViewPartialDelete" };
         settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
         settings.SettingsBehavior.ConfirmDelete = true;
         settings.Width = Unit.Percentage(100);
@@ -39,17 +39,17 @@
 
         settings.Columns.Add(c =>
         {
-            c.FieldName = "Schedule.Event.Name";
+            c.FieldName = "Event.Name";
             c.AdaptivePriority = 3;
         });
         settings.Columns.Add(c =>
         {
-            c.FieldName = "Schedule.Competitor.Name";
+            c.FieldName = "Competitor.Name";
             c.AdaptivePriority = 1;
         });
         settings.Columns.Add(c =>
         {
-            c.FieldName = "Schedule.Competitor.Company.Name";
+            c.FieldName = "Competitor.Company.Name";
             c.Caption = "¹«Ë¾";
             c.AdaptivePriority = 2;
         });
@@ -68,7 +68,7 @@
 
         settings.SetEditFormTemplateContent(c =>
         {
-            Html.RenderAction("ScoreJudgeEditFormPartial", new { Id = c.KeyValue });
+            Html.RenderAction("ScheduleJudgeEditFormPartial", new { Id = c.KeyValue });
         });
 
 

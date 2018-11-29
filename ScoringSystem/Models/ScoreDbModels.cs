@@ -64,34 +64,100 @@ namespace ScoringSystem.Models
     public class Schedule
     {
         public int Id { get; set; }
+        [Display(Name = "项目名称")]
+        public int EventId { get; set; }
+        [Display(Name = "选手")]
+        public int? CompetitorId { get; set; }
+
+        public string Subject
+        { get
+            {
+                return Event.Name + "|" + Competitor.Name;
+            }
+        }
         [Display(Name = "开始时间")]
         public DateTime? PlanBeginTime { get; set; }
         [Display(Name = "结束时间")]
         public DateTime? PlanEndTime { get; set; }
         [Display(Name = "用时")]
+        public TimeSpan? TimeCosumeAVG
+        {
+            get
+            {
+                TimeSpan t = new TimeSpan();
+                int count = 0;
+                foreach(Score s in Scores)
+                {
+                    if(s.TimeConsume!=null)
+                    {
+                        t += s.TimeConsume.Value;
+                        count++;
+                    }
+                   
+                }
+                if(count!=0)
+                {
+                    return new TimeSpan(0,0,(int)t.TotalSeconds / count) ;
+                }
+                else
+                {
+                    return null;
+                }
+             
+            }
+        }
+        [Display(Name = "平均得分")]
+        public double? MarkAVG
+        {
+            get
+            {
+                double total = 0.0;
+                foreach(Score s in Scores)
+                {
+                    total += s.Mark??0;
+                }
+                if(Scores.Count>0)
+                {
+                    return total / Scores.Count;
+                }
+                else
+                {
+                    return null;
+                }
+                
+            }
+        }
+        
+        public virtual Competitor Competitor { get; set; }
+        public virtual Event Event { get; set; }
+        
+        public virtual ICollection<Score> Scores { get; set; }
+    }
+
+    public class Score
+    {
+        public int Id { get; set; }
+        [Display(Name = "用时")]
         public TimeSpan? TimeConsume { get; set; }
         [Display(Name = "得分")]
-        public double? Score { get; set; }
+        public double? Mark { get; set; }
         [Display(Name = "提交时间")]
         public Nullable<System.DateTime> JudgeTime { get; set; }
         [Display(Name = "修改时间")]
         public Nullable<System.DateTime> ModifyTime { get; set; }
 
-        [Display(Name = "项目名称")]
-        public int EventId { get; set; }
-        [Display(Name = "选手")]
-        public int? CompetitorId { get; set; }
+        public int ScheduleId { get; set; }
+
         [Display(Name = "裁判")]
         public int? JudgeId { get; set; }
-        [NotMapped]
-        public  string Subject { get { return Event.Name; } }
+      
 
         [NotMapped]
         public int? TimeConsume_hour
         {
             get
             {
-                if(TimeConsume.HasValue)
+                if (TimeConsume.HasValue)
                 {
                     return TimeConsume.Value.Hours;
                 }
@@ -99,16 +165,14 @@ namespace ScoringSystem.Models
             }
             set
             {
-                if(TimeConsume.HasValue)
+                if (TimeConsume.HasValue)
                 {
-                    TimeConsume = new TimeSpan(value??0, TimeConsume.Value.Minutes, TimeConsume.Value.Seconds); ;
+                    TimeConsume = new TimeSpan(value ?? 0, TimeConsume.Value.Minutes, TimeConsume.Value.Seconds); ;
                 }
                 else
                 {
                     TimeConsume = new TimeSpan(value ?? 0, 0, 0);
-                }
-                
-                
+                }                
             }
         }
         [NotMapped]
@@ -126,7 +190,7 @@ namespace ScoringSystem.Models
             {
                 if (TimeConsume.HasValue)
                 {
-                    TimeConsume = new TimeSpan(TimeConsume.Value.Hours, value??0, TimeConsume.Value.Seconds); ;
+                    TimeConsume = new TimeSpan(TimeConsume.Value.Hours, value ?? 0, TimeConsume.Value.Seconds); ;
                 }
                 else
                 {
@@ -151,7 +215,7 @@ namespace ScoringSystem.Models
             {
                 if (TimeConsume.HasValue)
                 {
-                    TimeConsume = new TimeSpan(TimeConsume.Value.Hours, TimeConsume.Value.Minutes,value??0); ;
+                    TimeConsume = new TimeSpan(TimeConsume.Value.Hours, TimeConsume.Value.Minutes, value ?? 0); ;
                 }
                 else
                 {
@@ -161,12 +225,9 @@ namespace ScoringSystem.Models
 
             }
         }
-        public virtual Competitor Competitor { get; set; }
-        public virtual Event Event { get; set; }
         public virtual Judge Judge { get; set; }
+        public virtual Schedule Schedule { get; set; }
     }
-
-
     public class Judge
     {
         public int Id { get; set; }

@@ -47,17 +47,17 @@
 
 
         settings.Columns.Add(c=> {
-            c.FieldName = "Event.Name";
+            c.FieldName = "Schedule.Event.Name";
             c.AdaptivePriority = 1;
         });
         settings.Columns.Add(c =>
         {
-            c.FieldName = "Competitor.Name";
+            c.FieldName = "Schedule.Competitor.Name";
             c.AdaptivePriority = 1;
         });
         settings.Columns.Add(c =>
         {
-            c.FieldName = "Competitor.Company.Name";
+            c.FieldName = "Schedule.Competitor.Company.Name";
             c.Caption = "¹«Ë¾";
             c.AdaptivePriority = 2;
         });
@@ -68,7 +68,7 @@
         });
         settings.Columns.Add(c =>
         {
-            c.FieldName = "Score";
+            c.FieldName = "Mark";
             c.AdaptivePriority = 1;
         });
         settings.Columns.Add(c =>
@@ -87,7 +87,7 @@
             c.FieldName = "ModifyTime";
             c.AdaptivePriority = 4;
         });
-       
+
 
         ////settings.Columns.Add(c =>
         ////{

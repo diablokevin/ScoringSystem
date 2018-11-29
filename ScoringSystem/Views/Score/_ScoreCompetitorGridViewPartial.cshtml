@@ -22,10 +22,11 @@
         settings.Columns.Add("PlanBeginTime");
         settings.Columns.Add("PlanEndTime");
         settings.Columns.Add("Competitor.Name");
-        settings.Columns.Add("TimeConsume");
-        settings.Columns.Add("Score");
+        settings.Columns.Add("TimeCosumeAVG");
+        settings.Columns.Add("MarkAVG");
+        settings.Columns.Add("Scores.Count");
 
-        
+
     });
 }
 @grid.Bind(Model).GetHtml()

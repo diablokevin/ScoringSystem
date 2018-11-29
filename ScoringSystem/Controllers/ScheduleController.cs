@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using ScoringSystem.Models;
 namespace ScoringSystem.Controllers
 {
     public class ScheduleController : Controller
     {
+        ScoringSystem.Models.ScoreDbContext db = new ScoringSystem.Models.ScoreDbContext();
+
         // GET: Schedule
         public ActionResult Index()
         {
@@ -15,133 +17,177 @@ namespace ScoringSystem.Controllers
             return View();
         }
 
-        //Scheduler
 
-        ScoringSystem.Models.ScoreDbContext appointmentContext = new ScoringSystem.Models.ScoreDbContext();
-        ScoringSystem.Models.ScoreDbContext resourceContext = new ScoringSystem.Models.ScoreDbContext();
 
-        public ActionResult SchedulerPartial()
+        [ValidateInput(false)]
+        public ActionResult ScheduleGridViewPartial()
         {
-            var appointments = appointmentContext.Schedules;
-            var resources = resourceContext.Schedules;
-
-            ViewData["Appointments"] = appointments.ToList();
-            ViewData["Resources"] = resources.ToList();
-
-            return PartialView("_SchedulerPartial");
+            var model = db.Schedules;
+            return PartialView("_ScheduleGridViewPartial", model.ToList());
         }
-        public ActionResult SchedulerPartialEditAppointment()
+        public ActionResult Multi(int? id)
+        { return View(); }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Multi()
         {
-            var appointments = appointmentContext.Schedules;
-            var resources = resourceContext.Schedules;
-
-            try
+            if (ModelState.IsValid)
             {
-                ScoreControllerSchedulerSettings.UpdateEditableDataObject(appointmentContext, resourceContext);
-            }
-            catch (Exception e)
-            {
-                ViewData["SchedulerErrorText"] = e.Message;
-            }
+                string content = Request["List"];
+                ViewBag.Content = content;
 
-            ViewData["Appointments"] = appointments.ToList();
-            ViewData["Resources"] = resources.ToList();
+                List<string> t = content.Split('\r', '\n').ToList();
+                ViewBag.Count = t.Count;
 
-            return PartialView("_SchedulerPartial");
-        }
-    }
-    public class ScoreControllerSchedulerSettings
-    {
-        static DevExpress.Web.Mvc.MVCxAppointmentStorage appointmentStorage;
-        public static DevExpress.Web.Mvc.MVCxAppointmentStorage AppointmentStorage
-        {
-            get
-            {
-                if (appointmentStorage == null)
+                foreach (string item in t)
                 {
-                    appointmentStorage = new DevExpress.Web.Mvc.MVCxAppointmentStorage();
-                    appointmentStorage.Mappings.AppointmentId = "Id";
-                    appointmentStorage.Mappings.Start = "PlanBeginTime";
-                    appointmentStorage.Mappings.End = "PlanEndTime";
-                    appointmentStorage.Mappings.Subject = "Subject";
-                    appointmentStorage.Mappings.Description = "";
-                    appointmentStorage.Mappings.Location = "";
-                    appointmentStorage.Mappings.AllDay = "";
-                    appointmentStorage.Mappings.Type = "EventId";
-                    appointmentStorage.Mappings.RecurrenceInfo = "";
-                    appointmentStorage.Mappings.ReminderInfo = "";
-                    appointmentStorage.Mappings.Label = "";
-                    appointmentStorage.Mappings.Status = "";
-                    appointmentStorage.Mappings.ResourceId = "";
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                        Schedule schedule = new Schedule();
+                        try
+                        {
+                            string date = item.Split('\t')[0];
+                            string eventName = item.Split('\t')[1];
+                            string competitorNum = item.Split('\t')[2];
+                            string begin = item.Split('\t')[3];
+                            string end = item.Split('\t')[4];
+
+                            schedule.PlanBeginTime = Convert.ToDateTime(date + " " + begin);
+                            schedule.PlanEndTime = Convert.ToDateTime(date + " " + end);
+                            schedule.EventId = db.Events.Where(c => c.Name == eventName).First().Id;
+                            var testData = db.Competitors.ToList();
+                            var competitors = db.Competitors.Where(c => c.Race_num == competitorNum);
+
+                            schedule.CompetitorId = competitors.FirstOrDefault().Id;
+                            db.Schedules.Add(schedule);
+
+
+                        }
+                        catch (Exception e)
+                        {
+                            ViewData["EditError"] = e.Message;
+                            ViewBag.FaultCount++;
+                        }
+
+                    }
                 }
-                return appointmentStorage;
+                ViewBag.SuccessCount = db.SaveChanges();
+                return View();
             }
+
+
+            return View();
         }
 
-        static DevExpress.Web.Mvc.MVCxResourceStorage resourceStorage;
-        public static DevExpress.Web.Mvc.MVCxResourceStorage ResourceStorage
+
+
+
+        [ValidateInput(false)]
+        public ActionResult ScheduleJudgeGridViewPartial()
         {
-            get
+            var judgeStaffid = User.Identity.Name;
+            var eventId = db.Judges.Where(j => j.StaffId == judgeStaffid).FirstOrDefault().EventId;
+            var model = db.Schedules.Where(s => s.EventId == eventId).OrderBy(s => s.PlanBeginTime);
+            return PartialView("_ScheduleJudgeGridViewPartial", model.ToList());
+        }
+        public ActionResult ScheduleJudgeEditFormPartial(int? Id)
+        {
+
+            if (Id != null)
             {
-                if (resourceStorage == null)
+                var model = db.Schedules.Find(Id);
+
+                return PartialView("_ScheduleJudgeEditFormPartial", model ?? new Models.Schedule());
+            }
+            return PartialView("_ScheduleJudgeEditFormPartial", new Models.Schedule());
+
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ScheduleJudgeGridViewPartialAddNew(ScoringSystem.Models.Score item)
+        {
+            var judgeStaffid = User.Identity.Name;
+            var judge = db.Judges.Where(j => j.StaffId == judgeStaffid).FirstOrDefault();
+            var eventId = judge.EventId;
+
+            if (ModelState.IsValid)
+            {
+                try
                 {
-                    resourceStorage = new DevExpress.Web.Mvc.MVCxResourceStorage();
-                    resourceStorage.Mappings.ResourceId = "Id";
-                    resourceStorage.Mappings.Caption = "Subject";
+                    item.JudgeId = judge.Id;
+                    item.JudgeTime = DateTime.Now;
+                    item.ModifyTime = DateTime.Now;
+                    db.Scores.Add(item);
+                    db.SaveChanges();
                 }
-                return resourceStorage;
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
             }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+
+            var model = db.Scores.Where(s => s.Schedule.EventId == eventId).OrderBy(s => s.Schedule.PlanBeginTime);
+            return PartialView("_ScheduleJudgeGridViewPartial", model.ToList());
         }
-
-        public static void UpdateEditableDataObject(ScoringSystem.Models.ScoreDbContext appointmentContext, ScoringSystem.Models.ScoreDbContext resourceContext)
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ScheduleJudgeGridViewPartialUpdate(ScoringSystem.Models.Score item)
         {
-            InsertAppointments(appointmentContext, resourceContext);
-            UpdateAppointments(appointmentContext, resourceContext);
-            DeleteAppointments(appointmentContext, resourceContext);
-        }
+            var judgeStaffid = User.Identity.Name;
+            var judge = db.Judges.Where(j => j.StaffId == judgeStaffid).FirstOrDefault();
+            var eventId = judge.EventId;
 
-        static void InsertAppointments(ScoringSystem.Models.ScoreDbContext appointmentContext, ScoringSystem.Models.ScoreDbContext resourceContext)
-        {
-            var appointments = appointmentContext.Schedules.ToList();
-            var resources = resourceContext.Schedules;
-
-            var newAppointments = DevExpress.Web.Mvc.SchedulerExtension.GetAppointmentsToInsert<ScoringSystem.Models.Schedule>("Scheduler", appointments, resources,
-                AppointmentStorage, ResourceStorage);
-            foreach (var appointment in newAppointments)
+            if (ModelState.IsValid)
             {
-                appointmentContext.Schedules.Add(appointment);
+                try
+                {
+                    var modelItem = db.Scores.FirstOrDefault(it => it.Id == item.Id);
+                    if (modelItem != null)
+                    {
+                        modelItem.JudgeId = judge.Id;
+                        if (modelItem.JudgeTime == null)
+                        {
+                            modelItem.JudgeTime = DateTime.Now;
+                        }
+                        modelItem.ModifyTime = DateTime.Now;
+                        this.UpdateModel(modelItem);
+                        db.SaveChanges();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
             }
-            appointmentContext.SaveChanges();
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+
+            var model = db.Scores.Where(s => s.Schedule.EventId == eventId).OrderBy(s => s.Schedule.PlanBeginTime);
+
+            return PartialView("_ScheduleJudgeGridViewPartial", model.ToList());
         }
-        static void UpdateAppointments(ScoringSystem.Models.ScoreDbContext appointmentContext, ScoringSystem.Models.ScoreDbContext resourceContext)
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ScoreJudgeGridViewPartialDelete(System.Int32 Id)
         {
-            var appointments = appointmentContext.Schedules.ToList();
-            var resources = resourceContext.Schedules;
-
-            var updAppointments = DevExpress.Web.Mvc.SchedulerExtension.GetAppointmentsToUpdate<ScoringSystem.Models.Schedule>("Scheduler", appointments, resources,
-                AppointmentStorage, ResourceStorage);
-            foreach (var appointment in updAppointments)
+            var model = db.Schedules;
+            if (Id >= 0)
             {
-                var origAppointment = appointments.FirstOrDefault(a => a.Id == appointment.Id);
-                appointmentContext.Entry(origAppointment).CurrentValues.SetValues(appointment);
+                try
+                {
+                    var item = model.FirstOrDefault(it => it.Id == Id);
+                    if (item != null)
+                        model.Remove(item);
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
             }
-            appointmentContext.SaveChanges();
+            return PartialView("_ScheduleJudgeGridViewPartial", model.ToList());
         }
 
-        static void DeleteAppointments(ScoringSystem.Models.ScoreDbContext appointmentContext, ScoringSystem.Models.ScoreDbContext resourceContext)
-        {
-            var appointments = appointmentContext.Schedules.ToList();
-            var resources = resourceContext.Schedules;
-
-            var delAppointments = DevExpress.Web.Mvc.SchedulerExtension.GetAppointmentsToRemove<ScoringSystem.Models.Schedule>("Scheduler", appointments, resources,
-                AppointmentStorage, ResourceStorage);
-            foreach (var appointment in delAppointments)
-            {
-                var delAppointment = appointments.FirstOrDefault(a => a.Id == appointment.Id);
-                if (delAppointment != null)
-                    appointmentContext.Schedules.Remove(delAppointment);
-            }
-            appointmentContext.SaveChanges();
-        }
     }
+
 }

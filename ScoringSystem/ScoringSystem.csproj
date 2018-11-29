@@ -332,11 +332,9 @@
     <Content Include="Views\Score\Index.cshtml" />
     <Content Include="Views\Score\_ScoreGridViewPartial.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
-    <Content Include="Views\Schedule\_SchedulerPartial.cshtml" />
     <Content Include="Views\Score\_ScoreEditFormPartial.cshtml" />
-    <Content Include="Views\Score\Multi.cshtml" />
-    <Content Include="Views\Score\ScheduleIndex.cshtml" />
-    <Content Include="Views\Score\_ScheduleGridViewPartial.cshtml" />
+    <Content Include="Views\Schedule\Multi.cshtml" />
+    <Content Include="Views\Schedule\_ScheduleGridViewPartial.cshtml" />
     <Content Include="Views\Judge\Index.cshtml" />
     <Content Include="Views\Judge\_JudgeGridViewPartial.cshtml" />
     <Content Include="Views\Judge\Multi.cshtml" />
@@ -345,6 +343,8 @@
     <Content Include="Views\Score\_ScoreJudgeEditFormPartial.cshtml" />
     <Content Include="Views\Score\_ScoreFinishGridViewPartial.cshtml" />
     <Content Include="Views\Score\_ScoreCompetitorGridViewPartial.cshtml" />
+    <Content Include="Views\Schedule\_ScheduleJudgeEditFormPartial.cshtml" />
+    <Content Include="Views\Schedule\_ScheduleJudgeGridViewPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -390,6 +390,10 @@
     <Compile Include="Migrations\201811130603333_allowNullDataInSchedule.Designer.cs">
       <DependentUpon>201811130603333_allowNullDataInSchedule.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811291557333_multiscore.cs" />
+    <Compile Include="Migrations\201811291557333_multiscore.Designer.cs">
+      <DependentUpon>201811291557333_multiscore.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -421,6 +425,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811130603333_allowNullDataInSchedule.resx">
       <DependentUpon>201811130603333_allowNullDataInSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811291557333_multiscore.resx">
+      <DependentUpon>201811291557333_multiscore.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -22,10 +22,10 @@
 @if (HttpContext.Current.User.IsInRole("考官"))
 {
     <h2>待评分</h2>
-    @Html.Action("ScoreJudgeGridViewPartial")
+    @Html.Action("ScheduleJudgeGridViewPartial","Schedule")
     <p></p>
     <h2>已完成</h2>
-    @Html.Action("ScoreFinishGridViewPartial")
+    @Html.Action("ScoreFinishGridViewPartial", "Score")
 
 }
 

@@ -1,6 +1,12 @@
-﻿@model ScoringSystem.Models.Score
+﻿@model ScoringSystem.Models.Schedule
 
 
+<h3>
+    <span> @Model.Competitor.Name</span>
+    <span> | </span>
+    <span> @Model.Competitor.Company.Name</span>
+</h3>
+<p>项目：@Model.Event.Name</p>
 
 @Html.DevExpress().FormLayout(flSettings =>
 {
@@ -8,68 +14,51 @@
     flSettings.Width = Unit.Percentage(100);
     flSettings.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
     flSettings.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
-    flSettings.ColCount = 2;
-    /*
-    flSettings.Items.Add(i =>
-    {
-        i.FieldName = "EventId";
-       
-        i.NestedExtension().ComboBox(s =>
-        {
-            s.Properties.TextField = "Name";
-            s.Properties.ValueField = "Id";
-            s.Properties.ValueType = typeof(int);
-            s.Properties.DataSource = ViewBag.Eventlist;
+    flSettings.ColCount = 1;
+    //flSettings.Items.Add(i =>
+    //{
+    //    i.FieldName = "EventId";
 
-        });
-    });
+    //    i.NestedExtension().ComboBox(s =>
+    //    {
+    //        s.Properties.TextField = "Name";
+    //        s.Properties.ValueField = "Id";
+    //        s.Properties.ValueType = typeof(int);
+    //        s.Properties.DataSource = ViewBag.Eventlist;
 
-    flSettings.Items.Add(i => i.Competitor.CompanyId, c => {
+    //    });
+    //});
 
-
-        c.NestedExtension().ComboBox(s => {
-            s.Name = "CompanyId";
-            s.Properties.TextField = "Name";
-            s.Properties.ValueField = "Id";
-            s.Properties.ValueType = typeof(int);
-            s.Properties.DataSource = ViewBag.Companylist;
-            s.Properties.ClientSideEvents.SelectedIndexChanged = "OnSelectedCompanyChanged";
-        });
-    });
-
-    flSettings.Items.Add(i =>i.CompetitorId, c =>
-    {
-
-        c.NestedExtension().ComboBox(s =>
-        {
-            s.Name  = "CompetitorId";
-            s.Properties.TextField = "Name";
-            s.Properties.ValueField = "Id";
-            s.Properties.ValueType = typeof(int);
-
-            s.CallbackRouteValues = new { Controller = "Competitor", Action = "GetCompetitorsByCompanyId"};
-            s.Properties.ClientSideEvents.BeginCallback = "CompetitorComboBox_BeginCallback";
-        });
-    });
+    //flSettings.Items.Add(i => i.Competitor.CompanyId, c => {
 
 
-    flSettings.Items.AddEmptyItem();
-    */
+    //    c.NestedExtension().ComboBox(s => {
+    //        s.Name = "CompanyId";
+    //        s.Properties.TextField = "Name";
+    //        s.Properties.ValueField = "Id";
+    //        s.Properties.ValueType = typeof(int);
+    //        s.Properties.DataSource = ViewBag.Companylist;
+    //        s.Properties.ClientSideEvents.SelectedIndexChanged = "OnSelectedCompanyChanged";
+    //    });
+    //});
 
-    flSettings.Items.Add(i =>
-    {
-        i.FieldName = "ScheduleId";
+    //flSettings.Items.Add(i =>i.CompetitorId, c =>
+    //{
 
-        i.NestedExtension().ComboBox(s =>
-        {
-            s.Properties.TextField = "Subject";
-            s.Properties.ValueField = "Id";
-            s.Properties.ValueType = typeof(int);
-            s.Properties.DataSource = ViewBag.Schedulelist;
+    //    c.NestedExtension().ComboBox(s =>
+    //    {
+    //        s.Name  = "CompetitorId";
+    //        s.Properties.TextField = "Name";
+    //        s.Properties.ValueField = "Id";
+    //        s.Properties.ValueType = typeof(int);
 
-        });
-    });
+    //        s.CallbackRouteValues = new { Controller = "Competitor", Action = "GetCompetitorsByCompanyId"};
+    //        s.Properties.ClientSideEvents.BeginCallback = "CompetitorComboBox_BeginCallback";
+    //    });
+    //});
 
+
+    //flSettings.Items.AddEmptyItem();
     flSettings.Items.AddGroupItem(g => {
 
         g.ColCount = 1;
@@ -120,7 +109,7 @@
     //    });
     //});
 
-    flSettings.Items.Add(i => i.Mark, c =>
+    flSettings.Items.Add(i => i.Score, c =>
     {
 
         c.NestedExtension().SpinEdit(s =>
@@ -143,14 +132,14 @@
         {
             btnSettings.Name = "btnUpdate";
             btnSettings.Text = "更新";
-            btnSettings.ClientSideEvents.Click = "function(s, e){ ScoreGridView.UpdateEdit(); }";
+            btnSettings.ClientSideEvents.Click = "function(s, e){ ScoreJudgeGridView.UpdateEdit(); }";
         }).Render();
         Html.DevExpress().Button(btnSettings =>
         {
             btnSettings.Name = "btnCancel";
             btnSettings.Text = "取消";
             btnSettings.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
-            btnSettings.ClientSideEvents.Click = "function(s, e){ ScoreGridView.CancelEdit(); }";
+            btnSettings.ClientSideEvents.Click = "function(s, e){ ScoreJudgeGridView.CancelEdit(); }";
         }).Render();
         ViewContext.Writer.Write("</div>");
     });

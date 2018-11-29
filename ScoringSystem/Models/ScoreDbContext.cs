@@ -27,7 +27,8 @@
         public virtual DbSet<Chip> Chips { get; set; }
         public virtual DbSet<Judge> Judges { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
-       
+        public virtual DbSet<Score> Scores { get; set; }
+
 
     }
 
