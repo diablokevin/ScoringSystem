@@ -87,106 +87,113 @@ namespace ScoringSystem.Controllers
         public ActionResult ScheduleJudgeGridViewPartial()
         {
             var judgeStaffid = User.Identity.Name;
-            var eventId = db.Judges.Where(j => j.StaffId == judgeStaffid).FirstOrDefault().EventId;
+            var judge = db.Judges.Where(j => j.StaffId == judgeStaffid).FirstOrDefault();
+            var eventId = judge.EventId;
             var model = db.Schedules.Where(s => s.EventId == eventId).OrderBy(s => s.PlanBeginTime);
-            return PartialView("_ScheduleJudgeGridViewPartial", model.ToList());
+            var test = from schedule in model
+                       where  !(from score in schedule.Scores
+                               where score.JudgeId == judge.Id
+                               select score.ScheduleId).Contains(schedule.Id)
+                       select schedule;
+         
+            return PartialView("_ScheduleJudgeGridViewPartial", test.ToList());
         }
-        public ActionResult ScheduleJudgeEditFormPartial(int? Id)
-        {
+        //public ActionResult ScheduleJudgeEditFormPartial(int? Id)
+        //{
 
-            if (Id != null)
-            {
-                var model = db.Schedules.Find(Id);
+        //    if (Id != null)
+        //    {
+        //        var model = db.Schedules.Find(Id);
 
-                return PartialView("_ScheduleJudgeEditFormPartial", model ?? new Models.Schedule());
-            }
-            return PartialView("_ScheduleJudgeEditFormPartial", new Models.Schedule());
+        //        return PartialView("_ScheduleJudgeEditFormPartial", model ?? new Models.Schedule());
+        //    }
+        //    return PartialView("_ScheduleJudgeEditFormPartial", new Models.Schedule());
 
-        }
-        [HttpPost, ValidateInput(false)]
-        public ActionResult ScheduleJudgeGridViewPartialAddNew(ScoringSystem.Models.Score item)
-        {
-            var judgeStaffid = User.Identity.Name;
-            var judge = db.Judges.Where(j => j.StaffId == judgeStaffid).FirstOrDefault();
-            var eventId = judge.EventId;
+        //}
+        //[HttpPost, ValidateInput(false)]
+        //public ActionResult ScheduleJudgeGridViewPartialAddNew(ScoringSystem.Models.Score item)
+        //{
+        //    var judgeStaffid = User.Identity.Name;
+        //    var judge = db.Judges.Where(j => j.StaffId == judgeStaffid).FirstOrDefault();
+        //    var eventId = judge.EventId;
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    item.JudgeId = judge.Id;
-                    item.JudgeTime = DateTime.Now;
-                    item.ModifyTime = DateTime.Now;
-                    db.Scores.Add(item);
-                    db.SaveChanges();
-                }
-                catch (Exception e)
-                {
-                    ViewData["EditError"] = e.Message;
-                }
-            }
-            else
-                ViewData["EditError"] = "Please, correct all errors.";
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            item.JudgeId = judge.Id;
+        //            item.JudgeTime = DateTime.Now;
+        //            item.ModifyTime = DateTime.Now;
+        //            db.Scores.Add(item);
+        //            db.SaveChanges();
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            ViewData["EditError"] = e.Message;
+        //        }
+        //    }
+        //    else
+        //        ViewData["EditError"] = "Please, correct all errors.";
 
-            var model = db.Scores.Where(s => s.Schedule.EventId == eventId).OrderBy(s => s.Schedule.PlanBeginTime);
-            return PartialView("_ScheduleJudgeGridViewPartial", model.ToList());
-        }
-        [HttpPost, ValidateInput(false)]
-        public ActionResult ScheduleJudgeGridViewPartialUpdate(ScoringSystem.Models.Score item)
-        {
-            var judgeStaffid = User.Identity.Name;
-            var judge = db.Judges.Where(j => j.StaffId == judgeStaffid).FirstOrDefault();
-            var eventId = judge.EventId;
+        //    var model = db.Scores.Where(s => s.Schedule.EventId == eventId).OrderBy(s => s.Schedule.PlanBeginTime);
+        //    return PartialView("_ScheduleJudgeGridViewPartial", model.ToList());
+        //}
+        //[HttpPost, ValidateInput(false)]
+        //public ActionResult ScheduleJudgeGridViewPartialUpdate(ScoringSystem.Models.Score item)
+        //{
+        //    var judgeStaffid = User.Identity.Name;
+        //    var judge = db.Judges.Where(j => j.StaffId == judgeStaffid).FirstOrDefault();
+        //    var eventId = judge.EventId;
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var modelItem = db.Scores.FirstOrDefault(it => it.Id == item.Id);
-                    if (modelItem != null)
-                    {
-                        modelItem.JudgeId = judge.Id;
-                        if (modelItem.JudgeTime == null)
-                        {
-                            modelItem.JudgeTime = DateTime.Now;
-                        }
-                        modelItem.ModifyTime = DateTime.Now;
-                        this.UpdateModel(modelItem);
-                        db.SaveChanges();
-                    }
-                }
-                catch (Exception e)
-                {
-                    ViewData["EditError"] = e.Message;
-                }
-            }
-            else
-                ViewData["EditError"] = "Please, correct all errors.";
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            var modelItem = db.Scores.FirstOrDefault(it => it.Id == item.Id);
+        //            if (modelItem != null)
+        //            {
+        //                modelItem.JudgeId = judge.Id;
+        //                if (modelItem.JudgeTime == null)
+        //                {
+        //                    modelItem.JudgeTime = DateTime.Now;
+        //                }
+        //                modelItem.ModifyTime = DateTime.Now;
+        //                this.UpdateModel(modelItem);
+        //                db.SaveChanges();
+        //            }
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            ViewData["EditError"] = e.Message;
+        //        }
+        //    }
+        //    else
+        //        ViewData["EditError"] = "Please, correct all errors.";
 
-            var model = db.Scores.Where(s => s.Schedule.EventId == eventId).OrderBy(s => s.Schedule.PlanBeginTime);
+        //    var model = db.Scores.Where(s => s.Schedule.EventId == eventId).OrderBy(s => s.Schedule.PlanBeginTime);
 
-            return PartialView("_ScheduleJudgeGridViewPartial", model.ToList());
-        }
-        [HttpPost, ValidateInput(false)]
-        public ActionResult ScoreJudgeGridViewPartialDelete(System.Int32 Id)
-        {
-            var model = db.Schedules;
-            if (Id >= 0)
-            {
-                try
-                {
-                    var item = model.FirstOrDefault(it => it.Id == Id);
-                    if (item != null)
-                        model.Remove(item);
-                    db.SaveChanges();
-                }
-                catch (Exception e)
-                {
-                    ViewData["EditError"] = e.Message;
-                }
-            }
-            return PartialView("_ScheduleJudgeGridViewPartial", model.ToList());
-        }
+        //    return PartialView("_ScheduleJudgeGridViewPartial", model.ToList());
+        //}
+        //[HttpPost, ValidateInput(false)]
+        //public ActionResult ScoreJudgeGridViewPartialDelete(System.Int32 Id)
+        //{
+        //    var model = db.Schedules;
+        //    if (Id >= 0)
+        //    {
+        //        try
+        //        {
+        //            var item = model.FirstOrDefault(it => it.Id == Id);
+        //            if (item != null)
+        //                model.Remove(item);
+        //            db.SaveChanges();
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            ViewData["EditError"] = e.Message;
+        //        }
+        //    }
+        //    return PartialView("_ScheduleJudgeGridViewPartial", model.ToList());
+        //}
 
     }
 

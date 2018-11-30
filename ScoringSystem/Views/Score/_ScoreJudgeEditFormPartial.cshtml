@@ -1,14 +1,19 @@
-﻿@model ScoringSystem.Models.Schedule
-
+﻿@model ScoringSystem.Models.Score
+@{
+    Layout = "~/Views/Shared/_lightLayout.cshtml";
+}
 
 <h3>
-    <span> @Model.Competitor.Name</span>
+    <span> @Model.Schedule.Competitor.Name</span>
     <span> | </span>
-    <span> @Model.Competitor.Company.Name</span>
+    <span> @Model.Schedule.Competitor.Company.Name</span>
 </h3>
-<p>项目：@Model.Event.Name</p>
+<p>项目：@Model.Schedule.Event.Name</p>
 
-@Html.DevExpress().FormLayout(flSettings =>
+@using (Html.BeginForm("ScoreJudgeEditFormPartial", "Score", FormMethod.Post, new { @class = "edit_form" }))
+{
+    @Html.Hidden("ScheduleId")
+    @Html.DevExpress().FormLayout(flSettings =>
 {
     flSettings.Name = "ScoreEditForm";
     flSettings.Width = Unit.Percentage(100);
@@ -109,7 +114,7 @@
     //    });
     //});
 
-    flSettings.Items.Add(i => i.Score, c =>
+    flSettings.Items.Add(i => i.Mark, c =>
     {
 
         c.NestedExtension().SpinEdit(s =>
@@ -132,16 +137,18 @@
         {
             btnSettings.Name = "btnUpdate";
             btnSettings.Text = "更新";
-            btnSettings.ClientSideEvents.Click = "function(s, e){ ScoreJudgeGridView.UpdateEdit(); }";
+            btnSettings.UseSubmitBehavior = true;
+            // btnSettings.ClientSideEvents.Click = "function(s, e){ ScoreJudgeGridView.UpdateEdit(); }";
         }).Render();
         Html.DevExpress().Button(btnSettings =>
         {
             btnSettings.Name = "btnCancel";
             btnSettings.Text = "取消";
             btnSettings.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
-            btnSettings.ClientSideEvents.Click = "function(s, e){ ScoreJudgeGridView.CancelEdit(); }";
+            btnSettings.ClientSideEvents.Click = "function(s, e){ document.location='" + DevExpressHelper.GetUrl(new { Controller = "Score", Action = "Index" }) + "'; }";
         }).Render();
         ViewContext.Writer.Write("</div>");
     });
 
 }).GetHtml()
+}

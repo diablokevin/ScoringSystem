@@ -3,9 +3,9 @@
         settings.Name = "ScheduleJudgeGridView";
         settings.CallbackRouteValues = new { Controller = "Schedule", Action = "ScheduleJudgeGridViewPartial" };
 
-        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Schedule", Action = "ScheduleJudgeGridViewPartialAddNew" };
-        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Schedule", Action = "ScheduleJudgeGridViewPartialUpdate" };
-        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Schedule", Action = "ScheduleJudgeGridViewPartialDelete" };
+        //settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Schedule", Action = "ScheduleJudgeGridViewPartialAddNew" };
+        //settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Schedule", Action = "ScheduleJudgeGridViewPartialUpdate" };
+        //settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Schedule", Action = "ScheduleJudgeGridViewPartialDelete" };
         settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
         settings.SettingsBehavior.ConfirmDelete = true;
         settings.Width = Unit.Percentage(100);
@@ -17,17 +17,27 @@
         settings.SettingsBehavior.AllowEllipsisInText = true;
 
 
-        settings.CommandColumn.Visible = true;
-        // settings.CommandColumn.ShowNewButtonInHeader = true;
+        //settings.CommandColumn.Visible = true;
+        //// settings.CommandColumn.ShowNewButtonInHeader = true;
 
-        //settings.CommandColumn.ShowDeleteButton = true;
-        settings.CommandColumn.ShowEditButton = true;
-        settings.CommandColumn.AdaptivePriority = 1;
-        settings.CommandColumn.MinWidth = 100;
+        ////settings.CommandColumn.ShowDeleteButton = true;
+        //settings.CommandColumn.ShowEditButton = true;
+        //settings.CommandColumn.AdaptivePriority = 1;
+        //settings.CommandColumn.MinWidth = 100;
 
 
-        settings.CommandColumn.Width = Unit.Percentage(18);
 
+        //settings.CommandColumn.Width = Unit.Percentage(18);
+
+        settings.Columns.Add(c=>{
+            c.Caption = "#";
+            c.SetDataItemTemplateContent(tc=> {
+                ViewContext.Writer.Write(
+                  Html.ActionLink("ÆÀ·Ö", "ScoreJudgeEditFormPartial", "Score", new { ScheduleId=DataBinder.Eval(tc.DataItem,"Id") }, null)
+
+                        );
+            });
+        });
 
 
         settings.KeyFieldName = "Id";

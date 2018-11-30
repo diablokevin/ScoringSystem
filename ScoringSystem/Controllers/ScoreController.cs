@@ -114,9 +114,9 @@ namespace ScoringSystem.Controllers
             return PartialView("_ScoreGridViewPartial", model.ToList());
         }
 
-      
 
-   
+
+
 
         //[ValidateInput(false)]
         //public ActionResult ScoreJudgeGridViewPartial()
@@ -128,7 +128,7 @@ namespace ScoringSystem.Controllers
         //}
         //public ActionResult ScoreJudgeEditFormPartial(int? Id)
         //{
-          
+
         //    if (Id != null)
         //    {
         //        var model = db.Schedules.Find(Id);
@@ -144,7 +144,7 @@ namespace ScoringSystem.Controllers
         //    var judgeStaffid = User.Identity.Name;
         //    var judge = db.Judges.Where(j => j.StaffId == judgeStaffid).FirstOrDefault();
         //    var eventId = judge.EventId;
-           
+
         //    if (ModelState.IsValid)
         //    {
         //        try
@@ -223,13 +223,13 @@ namespace ScoringSystem.Controllers
         //    return PartialView("_ScoreJudgeGridViewPartial", model.ToList());
         //}
 
-     
+
         [ValidateInput(false)]
         public ActionResult ScoreFinishGridViewPartial()
         {
             var judgeStaffid = User.Identity.Name;
            // var eventId = db.Judges.Where(j => j.StaffId == judgeStaffid).FirstOrDefault().EventId;
-            var model = db.Scores.Where(s => s.Judge.StaffId == judgeStaffid).OrderBy(s => s.Schedule.PlanBeginTime);
+            var model = db.Scores.Where(s => s.Judge.StaffId == judgeStaffid).OrderByDescending(s => s.JudgeTime);
 
 
             return PartialView("_ScoreFinishGridViewPartial", model.ToList());
@@ -245,6 +245,42 @@ namespace ScoringSystem.Controllers
             var model = db.Schedules.Where(s => s.CompetitorId == competitor.Id).Include(s => s.Scores).OrderBy(s => s.PlanBeginTime);
             var test = model.ToList();
             return PartialView("_ScoreCompetitorGridViewPartial", model.ToList());
+        }
+
+        public ActionResult ScoreJudgeEditFormPartial(int? ScheduleId)
+        {
+
+            if (ScheduleId != null)
+            {
+                var model = new Score();
+                model.ScheduleId = ScheduleId.Value;
+                model.Schedule = db.Schedules.Find(ScheduleId);
+
+                return PartialView("_ScoreJudgeEditFormPartial", model ?? new Models.Score());
+            }
+            return PartialView("_ScoreJudgeEditFormPartial", new Models.Score());
+
+        }
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult ScoreJudgeEditFormPartial(Score item)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var judgeStaffid = User.Identity.Name;
+                var judge = db.Judges.Where(j => j.StaffId == judgeStaffid).FirstOrDefault();
+              
+                item.JudgeId = judge.Id;
+                item.JudgeTime = DateTime.Now;
+                item.ModifyTime = DateTime.Now;
+                db.Scores.Add(item);
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            return PartialView("_ScoreJudgeEditFormPartial", new Models.Score());
+
         }
     }
 }
