@@ -1,0 +1,25 @@
+@{
+	var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "CompanyRankReportGridView";
+        settings.CallbackRouteValues = new { Controller = "Report", Action = "CompanyRankReporGridViewPartial" };
+
+
+		settings.KeyFieldName = "Rank";
+
+		settings.SettingsPager.Visible = true;
+		settings.Settings.ShowGroupPanel = true;
+		settings.Settings.ShowFilterRow = true;
+		settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+		settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+		settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+		settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+		settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+		settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+				settings.Columns.Add("Rank");
+				settings.Columns.Add("CompanyName");
+				settings.Columns.Add("Score");
+			});
+}
+@grid.Bind(Model).GetHtml()

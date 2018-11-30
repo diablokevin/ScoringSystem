@@ -10,7 +10,7 @@
     settings.ControlStyle.Paddings.Padding = System.Web.UI.WebControls.Unit.Pixel(0);
     settings.ClientSideEvents.ItemClick = "function(s,e){ GotoPage(s,e);}";
     settings.AllowSelectItem = true;
-    
+
     string pagename = ViewBag.PageName;
     switch (pagename)
     {
@@ -34,7 +34,27 @@
             });
             break;
         case "Report":
+            settings.Groups.Add(group =>
+            {
+                group.Text = "公司成绩";
+                group.Items.Add("公司总成绩排名");
+                group.Items.Add("公司成绩明细");
 
+            });
+            settings.Groups.Add(group =>
+            {
+                group.Text = "个人成绩";
+                group.Items.Add("个人排名(ME)");
+                group.Items.Add("个人排名(AV)");
+
+            });
+            settings.Groups.Add(group =>
+            {
+                group.Text = "项目成绩";
+                group.Items.Add("单项排名(ME)");
+                group.Items.Add("单项排名(AV)");
+
+            });
             break;
         case "Setting":
             settings.Groups.Add(group =>
@@ -50,7 +70,7 @@
                 group.Text = "赛事设置";
                 group.Name = "eventSetting";
                 group.Items.Add("考核项目","event");
-                group.Items.Add("项目赛程","score/scheduleindex");
+                group.Items.Add("项目赛程", "schedule");
 
             });
             settings.Groups.Add(group =>

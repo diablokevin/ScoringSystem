@@ -4,7 +4,7 @@
 @{
     if (!Request.IsAuthenticated)
     {
-        <h1>请点击页面上方登录</h1>
+        <h3>请点击页面上方登录</h3>
     }
     else
     {
@@ -55,24 +55,24 @@
                 <div class="myitem">
                     <img src="~/Content/Icon/notebook.png" />
                     <br />
-                    <p>评分</p>
+                    <p>评分列表</p>
                 </div>
             </a>
 
-            <a href="@Url.Action("Index", "Score")">
+            @*<a href="@Url.Action("Index", "Score")">
                 <div class="myitem">
 
                     <img src="~/Content/Icon/table.png" />
                     <br />
                     <p>比赛成绩</p>
                 </div>
-            </a>
+            </a>*@
 
-            <a href="@Url.Action("ScheduleIndex", "Score")">
+            <a href="@Url.Action("Index", "Schedule")">
                 <div class="myitem">
                     <img src="~/Content/Icon/calendar.png" />
                     <br />
-                    <p>相关赛程</p>
+                    <p>所有赛程</p>
                 </div>
             </a>
             <div class="clear"></div>

@@ -31,6 +31,8 @@
 
         settings.Columns.Add(c=>{
             c.Caption = "#";
+            c.Width = Unit.Pixel(50);
+            c.AdaptivePriority = 1;
             c.SetDataItemTemplateContent(tc=> {
                 ViewContext.Writer.Write(
                   Html.ActionLink("ÆÀ·Ö", "ScoreJudgeEditFormPartial", "Score", new { ScheduleId=DataBinder.Eval(tc.DataItem,"Id") }, null)
@@ -55,6 +57,11 @@
         settings.Columns.Add(c =>
         {
             c.FieldName = "Competitor.Name";
+            c.AdaptivePriority = 1;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Competitor.Race_num";
             c.AdaptivePriority = 1;
         });
         settings.Columns.Add(c =>

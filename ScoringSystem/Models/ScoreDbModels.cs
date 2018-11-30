@@ -84,25 +84,33 @@ namespace ScoringSystem.Models
         {
             get
             {
-                TimeSpan t = new TimeSpan();
-                int count = 0;
-                foreach(Score s in Scores)
-                {
-                    if(s.TimeConsume!=null)
-                    {
-                        t += s.TimeConsume.Value;
-                        count++;
-                    }
-                   
-                }
-                if(count!=0)
-                {
-                    return new TimeSpan(0,0,(int)t.TotalSeconds / count) ;
-                }
-                else
+                if (this.Scores.Max(s => s.JudgeTime) > DateTime.Now.AddHours(-4))  //最晚的裁判时间晚于现在之前的4小时，可以显示数据（最后一个裁判判定后4小时显示数据）
                 {
                     return null;
                 }
+                else
+                {
+                    TimeSpan t = new TimeSpan();
+                    int count = 0;
+                    foreach (Score s in Scores)
+                    {
+                        if (s.TimeConsume != null)
+                        {
+                            t += s.TimeConsume.Value;
+                            count++;
+                        }
+
+                    }
+                    if (count != 0)
+                    {
+                        return new TimeSpan(0, 0, (int)t.TotalSeconds / count);
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+              
              
             }
         }
@@ -111,19 +119,27 @@ namespace ScoringSystem.Models
         {
             get
             {
-                double total = 0.0;
-                foreach(Score s in Scores)
-                {
-                    total += s.Mark??0;
-                }
-                if(Scores.Count>0)
-                {
-                    return total / Scores.Count;
-                }
-                else
+                if(this.Scores.Max(s=>s.JudgeTime)>DateTime.Now.AddHours(-4))  //最晚的裁判时间晚于现在之前的4小时，可以显示数据（最后一个裁判判定后4小时显示数据）
                 {
                     return null;
                 }
+                else
+                {
+                    double total = 0.0;
+                    foreach (Score s in Scores)
+                    {
+                        total += s.Mark ?? 0;
+                    }
+                    if (Scores.Count > 0)
+                    {
+                        return total / Scores.Count;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                
                 
             }
         }

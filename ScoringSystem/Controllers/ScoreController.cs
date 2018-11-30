@@ -35,7 +35,7 @@ namespace ScoringSystem.Controllers
         {
             //ViewBag.Eventlist = db.Events.ToList();
             //ViewBag.Companylist = db.Companies.ToList();
-            ViewBag.Schedulelist = db.Schedules.ToList();
+            ViewBag.Schedulelist = db.Schedules.OrderBy(s=>s.EventId).OrderBy(s=>s.Competitor.Name).ToList();
             if (Id != null)
             { 
                 var model = db.Scores.Find(Id);
@@ -96,7 +96,7 @@ namespace ScoringSystem.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult ScoreGridViewPartialDelete(System.Int32 Id)
         {
-            var model = db.Schedules;
+            var model = db.Scores;
             if (Id >= 0)
             {
                 try
@@ -242,8 +242,8 @@ namespace ScoringSystem.Controllers
             var competitor = db.Competitors.Where(j => j.StaffId == competitorStaffid).FirstOrDefault();
 
             //var model = db.Schedules.Where(s => s.CompetitorId == competitor.Id).OrderBy(s => s.PlanBeginTime);
-            var model = db.Schedules.Where(s => s.CompetitorId == competitor.Id).Include(s => s.Scores).OrderBy(s => s.PlanBeginTime);
-            var test = model.ToList();
+            var model = db.Schedules.Where(s => s.CompetitorId == competitor.Id).Include(s => s.Scores).Include(s=>s.Competitor).OrderBy(s => s.PlanBeginTime);
+           
             return PartialView("_ScoreCompetitorGridViewPartial", model.ToList());
         }
 
