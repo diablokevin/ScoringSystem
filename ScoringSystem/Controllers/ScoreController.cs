@@ -24,7 +24,7 @@ namespace ScoringSystem.Controllers
         [ValidateInput(false)]
         public ActionResult ScoreGridViewPartial()
         {
-            var model = db.Scores.Include(s => s.Schedule);
+            var model = db.Scores.Include(s => s.Schedule).OrderByDescending(s=>s.JudgeTime);
             //ViewBag.Eventlist = db.Events.ToList();
             //ViewBag.Companylist = db.Companies.ToList();
             //ViewBag.Schedulelist = db.Schedules.ToList();

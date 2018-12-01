@@ -119,7 +119,7 @@
 
         c.NestedExtension().SpinEdit(s =>
         {
-            s.Properties.NumberType = SpinEditNumberType.Integer;
+            s.Properties.NumberType = SpinEditNumberType.Float;
             s.Properties.MinValue = 0;
             s.Properties.MaxValue = 100;
         });
@@ -136,7 +136,7 @@
         Html.DevExpress().Button(btnSettings =>
         {
             btnSettings.Name = "btnUpdate";
-            btnSettings.Text = "更新";
+            btnSettings.Text = "提交";
             btnSettings.UseSubmitBehavior = true;
             // btnSettings.ClientSideEvents.Click = "function(s, e){ ScoreJudgeGridView.UpdateEdit(); }";
         }).Render();
