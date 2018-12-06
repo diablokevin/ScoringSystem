@@ -7,7 +7,7 @@
         settings.KeyFieldName = "Id";
 
         settings.SettingsPager.Visible = true;
-        settings.SettingsPager.PageSize = 20;
+        settings.SettingsPager.PageSize = 40;
         settings.Settings.ShowGroupPanel = true;
         settings.Settings.ShowFilterRow = true;
         settings.SettingsBehavior.AllowSelectByRowClick = true;
@@ -43,7 +43,13 @@
         settings.Columns.Add(c =>
         {
             c.FieldName = "PlanEndTime";
-            c.AdaptivePriority = 1;
+            c.AdaptivePriority = 2;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Scores.Count";
+            c.Caption = "已提交分数";
+            c.AdaptivePriority = 3;
         });
 
     });

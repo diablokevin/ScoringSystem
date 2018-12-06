@@ -102,7 +102,7 @@ namespace ScoringSystem.Controllers
                 string content = Request["List"];
                 ViewBag.Content = content;
 
-                List<string> t = content.Split('\n').ToList();
+                List<string> t = content.Split('\n','\r').ToList();
                 ViewBag.Count = t.Count;
 
                 foreach (string name in t)

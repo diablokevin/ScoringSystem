@@ -51,6 +51,7 @@
     <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Web.ASPxPivotGrid.v17.2, Version=17.2.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -348,6 +349,15 @@
     <Content Include="Views\Schedule\_ScheduleJudgeGridViewPartial.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Report\_CompanyRankReporGridViewPartial.cshtml" />
+    <Content Include="Views\Report\EventRank_ME.cshtml" />
+    <Content Include="Views\Report\_EventRankGridViewPartial.cshtml" />
+    <Content Include="Views\Report\EventRank_AV.cshtml" />
+    <Content Include="Views\Report\CompanyRank.cshtml" />
+    <Content Include="Views\Report\_ScorePivotGridPartial.cshtml" />
+    <Content Include="Views\Report\PersonalAVRank.cshtml" />
+    <Content Include="Views\Report\PersonalMERank.cshtml" />
+    <Content Include="Views\Report\_PersonalRankGridViewPartial.cshtml" />
+    <Content Include="Views\Report\_CompanyRankDetailGridViewPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

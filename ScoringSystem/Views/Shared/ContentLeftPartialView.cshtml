@@ -37,22 +37,22 @@
             settings.Groups.Add(group =>
             {
                 group.Text = "公司成绩";
-                group.Items.Add("公司总成绩排名");
-                group.Items.Add("公司成绩明细");
+                group.Items.Add("公司总成绩排名","report/companyrank");
+               
 
             });
             settings.Groups.Add(group =>
             {
                 group.Text = "个人成绩";
-                group.Items.Add("个人排名(ME)");
-                group.Items.Add("个人排名(AV)");
+                group.Items.Add("个人排名(ME)","report/personalMERank");
+                group.Items.Add("个人排名(AV)", "report/personalAVRank");
 
             });
             settings.Groups.Add(group =>
             {
                 group.Text = "项目成绩";
-                group.Items.Add("单项排名(ME)");
-                group.Items.Add("单项排名(AV)");
+                group.Items.Add("单项排名(ME)", "report/EventRank_ME");
+                group.Items.Add("单项排名(AV)", "report/EventRank_AV");
 
             });
             break;

@@ -1,20 +1,16 @@
 @{
     var grid = Html.DevExpress().GridView(settings => {
-        settings.Name = "CompanyRankReportGridView";
-        settings.CallbackRouteValues = new { Controller = "Report", Action = "CompanyRankReporGridViewPartial" };
+        settings.Name = "EventRankGridView";
+        settings.CallbackRouteValues = new { Controller = "Report", Action = "EventRankGridViewPartial" };
 
 
         settings.KeyFieldName = "Rank";
 
         settings.SettingsPager.Visible = true;
-        settings.SettingsPager.PageSize = 30;
-
-
-        settings.SettingsBehavior.AllowSelectByRowClick = true;
-        settings.SettingsDetail.AllowOnlyOneMasterRowExpanded = false;
-        settings.SettingsDetail.ShowDetailRow = true;
-      
-
+        settings.SettingsPager.PageSize = 100;
+        settings.Settings.ShowGroupPanel = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = false;
+        settings.Width = Unit.Percentage(100);
         settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
         settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
         settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
@@ -23,6 +19,10 @@
 
         settings.SettingsExport.EnableClientSideExportAPI = true;
         settings.SettingsExport.ExcelExportMode = DevExpress.Export.ExportType.WYSIWYG;
+        string eventname = ViewBag.EventName;
+        string pro = ViewBag.Pro;
+        settings.SettingsExport.FileName = eventname+pro ;
+
 
         settings.Toolbars.Add(t =>
         {
@@ -34,16 +34,15 @@
 
         });
 
-        settings.Columns.Add("Rank");
-        settings.Columns.Add("CompanyName");
-        settings.Columns.Add("Score");
-        settings.Columns.Add("Count");
+        settings.ClientSideEvents.BeginCallback = "EventRankGridView_BeginCallback";
+        settings.Columns.Add("Rank","排名");
+        settings.Columns.Add("EventName","项目");
+        settings.Columns.Add("Competitor_Name","姓名");
+        settings.Columns.Add("Competitor_Company", "公司");
+        settings.Columns.Add("Competitor_Staffid", "员工号");
+        settings.Columns.Add("Competitor_Pro", "专业");
 
-        settings.SetDetailRowTemplateContent(c=> {
-            Html.RenderAction("CompanyRankDetailGridViewPartial", new { company = DataBinder.Eval(c.DataItem, "CompanyName") });
-        });
-
-   
+        settings.Columns.Add("Score", "分数");
     });
 }
 @grid.Bind(Model).GetHtml()

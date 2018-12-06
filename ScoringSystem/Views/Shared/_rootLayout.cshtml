@@ -8,21 +8,27 @@
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
 
     @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionSuite = ExtensionSuite.PivotGrid },
         new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
         new StyleSheet { ExtensionSuite = ExtensionSuite.CardView },
         new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
         new StyleSheet { ExtensionSuite = ExtensionSuite.Scheduler },
         new StyleSheet { ExtensionSuite = ExtensionSuite.Report },
         new StyleSheet { ExtensionSuite = ExtensionSuite.GridView }
+          
     )
     @Html.DevExpress().GetScripts(
+         new Script { ExtensionSuite = ExtensionSuite.PivotGrid },
         new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
         new Script { ExtensionSuite = ExtensionSuite.CardView },
         new Script { ExtensionSuite = ExtensionSuite.Editors },
         new Script { ExtensionSuite = ExtensionSuite.Scheduler },
         new Script { ExtensionSuite = ExtensionSuite.Report },
         new Script { ExtensionSuite = ExtensionSuite.GridView }
+        
     )
+
+
 
     <script src="~/Scripts/MyFunction.js"></script>
     <link href="~/Content/Site.css" rel="stylesheet" />

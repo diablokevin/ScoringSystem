@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "~/Views/Shared/_mainLayout.cshtml";
+}
+
+<script>
+    //SetLeftNarBarItemSelect("Report", "report/EventRank_ME");
+    function OnSelectedEventChanged(s, e) {
+        EventRankGridView.PerformCallback();
+
+    }
+
+    function OnDateChanged(s, e) {
+        EventRankGridView.PerformCallback();
+
+    }
+
+
+    function EventRankGridView_BeginCallback(s, e) {
+        e.customArgs["eventId"] = EventCombobox.GetValue();
+
+        e.customArgs["time"] = GetDateEditValueToCFormat(DateEdit);   
+        
+        e.customArgs["pro"] = "ME";
+    }
+</script>
+
+<h3>
+    单项排名
+</h3>
+
+
+@Html.DevExpress().DateEdit(settings => {
+    settings.Name = "DateEdit";
+    settings.Properties.EditFormat = EditFormat.DateTime;
+    settings.Properties.Caption = "截止时间";
+    settings.Properties.EditFormatString = "yyyy/MM/dd hh:mm";
+    settings.Properties.DisplayFormatString = "yyyy/MM/dd hh:mm";
+    settings.Properties.TimeSectionProperties.Visible = true;
+    settings.Properties.TimeSectionProperties.Adaptive = true;
+    settings.Properties.ClientSideEvents.DateChanged = "OnDateChanged";
+}).GetHtml()
+<p>
+
+    @Html.DevExpress().ComboBox(m =>
+{
+   m.Name = "EventCombobox";
+   m.Properties.Caption = "选择项目";
+   m.Properties.TextField = "Name";
+   m.Properties.ValueField = "Id";
+   m.Properties.EnableClientSideAPI = true;
+   m.Properties.ClientSideEvents.SelectedIndexChanged = "OnSelectedEventChanged";
+}).BindList(ViewBag.EventList).GetHtml()
+
+</p>
+
+
+@using (Html.BeginForm())
+{
+@Html.Action("EventRankGridViewPartial", new { pro = "ME" })
+}

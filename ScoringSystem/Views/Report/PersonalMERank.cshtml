@@ -1,0 +1,9 @@
+﻿@{
+    Layout = "~/Views/Shared/_mainLayout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+@Html.Action("PersonalRankGridViewPartial", new { pro = "ME" })
+}

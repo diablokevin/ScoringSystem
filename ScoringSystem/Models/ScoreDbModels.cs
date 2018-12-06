@@ -80,16 +80,74 @@ namespace ScoringSystem.Models
         [Display(Name = "结束时间")]
         public DateTime? PlanEndTime { get; set; }
         [Display(Name = "用时")]
+        //public TimeSpan? TimeCosumeAVG
+        //{
+        //    get
+        //    {
+        //        if (this.Scores.Max(s => s.JudgeTime) > DateTime.Now.AddHours(-4))  //最晚的裁判时间晚于现在之前的4小时，可以显示数据（最后一个裁判判定后4小时显示数据）
+        //        {
+        //            return null;
+        //        }
+        //        else
+        //        {
+        //            TimeSpan t = new TimeSpan();
+        //            int count = 0;
+        //            foreach (Score s in Scores)
+        //            {
+        //                if (s.TimeConsume != null)
+        //                {
+        //                    t += s.TimeConsume.Value;
+        //                    count++;
+        //                }
+
+        //            }
+        //            if (count != 0)
+        //            {
+        //                return new TimeSpan(0, 0, (int)t.TotalSeconds / count);
+        //            }
+        //            else
+        //            {
+        //                return null;
+        //            }
+        //        }
+
+
+        //    }
+        //}
+        //[Display(Name = "平均得分")]
+        //public double? MarkAVG
+        //{
+        //    get
+        //    {
+        //        if(this.Scores.Max(s=>s.JudgeTime)>DateTime.Now.AddHours(-4))  //最晚的裁判时间晚于现在之前的4小时，可以显示数据（最后一个裁判判定后4小时显示数据）
+        //        {
+        //            return null;
+        //        }
+        //        else
+        //        {
+        //            double total = 0.0;
+        //            foreach (Score s in Scores)
+        //            {
+        //                total += s.Mark ?? 0;
+        //            }
+        //            if (Scores.Count > 0)
+        //            {
+        //                return total / Scores.Count;
+        //            }
+        //            else
+        //            {
+        //                return null;
+        //            }
+        //        }
+
+
+        //    }
+        //}
         public TimeSpan? TimeCosumeAVG
         {
             get
             {
-                if (this.Scores.Max(s => s.JudgeTime) > DateTime.Now.AddHours(-4))  //最晚的裁判时间晚于现在之前的4小时，可以显示数据（最后一个裁判判定后4小时显示数据）
-                {
-                    return null;
-                }
-                else
-                {
+              
                     TimeSpan t = new TimeSpan();
                     int count = 0;
                     foreach (Score s in Scores)
@@ -109,9 +167,9 @@ namespace ScoringSystem.Models
                     {
                         return null;
                     }
-                }
               
-             
+
+
             }
         }
         [Display(Name = "平均得分")]
@@ -119,12 +177,7 @@ namespace ScoringSystem.Models
         {
             get
             {
-                if(this.Scores.Max(s=>s.JudgeTime)>DateTime.Now.AddHours(-4))  //最晚的裁判时间晚于现在之前的4小时，可以显示数据（最后一个裁判判定后4小时显示数据）
-                {
-                    return null;
-                }
-                else
-                {
+               
                     double total = 0.0;
                     foreach (Score s in Scores)
                     {
@@ -137,13 +190,10 @@ namespace ScoringSystem.Models
                     else
                     {
                         return null;
-                    }
-                }
-                
-                
+                    }            
+
             }
         }
-        
         public virtual Competitor Competitor { get; set; }
         public virtual Event Event { get; set; }
         

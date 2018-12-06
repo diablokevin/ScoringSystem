@@ -9,6 +9,7 @@
     flSettings.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
     flSettings.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
     flSettings.ColCount = 2;
+    
     /*
     flSettings.Items.Add(i =>
     {
@@ -125,7 +126,7 @@
 
         c.NestedExtension().SpinEdit(s =>
         {
-            s.Properties.NumberType = SpinEditNumberType.Integer;
+            s.Properties.NumberType = SpinEditNumberType.Float;
             s.Properties.MinValue = 0;
             s.Properties.MaxValue = 100;
         });

@@ -22,3 +22,17 @@ function SetLeftNarBarItemSelect(group, item) {
     GetLeftNavBarGroup(group).SetExpanded(true);
     LeftNavBar.SetSelectedItem(GetLeftNavBarItem(item));
 }
+
+
+function GetDateEditValueToCFormat(DateEdit) {
+    if (DateEdit.GetValue() != null) {
+        var endtime = new Date(DateEdit.GetValue());
+
+        var timestring = endtime.getFullYear() + "-" + (endtime.getMonth() + 1) + "-" + endtime.getDate() + " " + endtime.getHours() + ":" + endtime.getMinutes() + ":" + endtime.getSeconds();
+
+        return timestring;
+    }
+    else {
+        return null;
+    }
+}

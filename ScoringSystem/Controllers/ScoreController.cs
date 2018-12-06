@@ -71,7 +71,7 @@ namespace ScoringSystem.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult ScoreGridViewPartialUpdate(ScoringSystem.Models.Score item)
         {
-            var model = db.Scores;
+            var model = db.Scores.Include(s => s.Schedule).OrderByDescending(s => s.JudgeTime);
             if (ModelState.IsValid)
             {
                 try

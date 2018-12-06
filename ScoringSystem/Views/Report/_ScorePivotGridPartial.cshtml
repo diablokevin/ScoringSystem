@@ -1,0 +1,53 @@
+@Html.DevExpress().GetStyleSheets(
+    new StyleSheet { ExtensionSuite = ExtensionSuite.PivotGrid }
+)
+@Html.DevExpress().GetScripts(
+     new Script { ExtensionSuite = ExtensionSuite.PivotGrid }
+
+)
+
+@Html.DevExpress().PivotGrid(settings => {
+    settings.Name = "ScorePivotGrid";
+    settings.CallbackRouteValues = new { Controller = "Report", Action = "ScorePivotGridPartial" };
+    settings.OptionsPager.ColumnsPerPage = 20;
+    settings.OptionsPager.RowsPerPage = 100;
+    settings.Fields.Add(field =>
+    {
+        //field.Area = PivotArea.FilterArea;
+        field.FieldName = "Event.Name";
+        field.Caption = "项目";
+        field.Area = PivotArea.ColumnArea;
+    });
+    settings.Fields.Add(field =>
+    {
+        //field.Area = PivotArea.FilterArea;
+        field.FieldName = "Competitor.Name";
+        field.Caption = "选手";
+        field.Area = PivotArea.RowArea;
+        field.AreaIndex = 1;
+    });
+    settings.Fields.Add(field =>
+    {
+        //field.Area = PivotArea.FilterArea;
+        field.FieldName = "Competitor.Company.Name";
+        field.Caption = "公司";
+        field.Area = PivotArea.RowArea;
+        field.AreaIndex = 0;
+
+    });
+    settings.Fields.Add(field => {
+        field.Area = PivotArea.FilterArea;
+        field.FieldName = "TimeCosumeAVG";
+        field.Caption = "耗时";
+
+
+    });
+    settings.Fields.Add(field => {
+       // field.Area = PivotArea.FilterArea;
+        field.FieldName = "MarkAVG";
+        field.Caption = "得分";
+        field.Area = PivotArea.DataArea;
+        field.AreaIndex = 0;
+    });
+
+}).Bind(Model).GetHtml()

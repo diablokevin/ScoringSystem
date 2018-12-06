@@ -1,0 +1,43 @@
+@{
+    var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "CompanyRankDetailGridView"+ ViewData["company"];
+        settings.CallbackRouteValues = new { Controller = "Report", Action = "CompanyRankDetailGridViewPartial" };
+
+
+        settings.KeyFieldName = "Staffid";
+
+
+
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.Width = Unit.Percentage(100);
+        settings.SettingsPager.PageSize = 10;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.Off;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+        settings.SettingsExport.EnableClientSideExportAPI = true;
+
+
+        settings.Columns.Add("Name");
+        settings.Columns.Add("Staffid");
+        settings.Columns.Add("Pro");
+        settings.Columns.Add("Company");
+
+        settings.Columns.Add("Bishi");
+        settings.Columns.Add("Baoxian");
+        settings.Columns.Add("Biaoxian");
+        settings.Columns.Add("Tujiao");
+        settings.Columns.Add("APU");
+        settings.Columns.Add("Guanlu");
+        settings.Columns.Add("Daqi");
+        settings.Columns.Add("Shouce");
+        settings.Columns.Add("Shuiping");
+        settings.Columns.Add("Yijiandeng");
+        settings.Columns.Add("Dianyuan");
+
+        settings.Columns.Add("TotalScore");
+    });
+}
+@grid.Bind(Model).GetHtml()
